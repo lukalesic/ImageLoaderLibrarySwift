@@ -36,6 +36,10 @@ actor Loader{
                 let image = UIImage(data: imageData)!
                 return image
             }
+        
+        //error handling ovdje
+        //unit testovi za async await
+        //tabu\lice onak za gridove 4x4 pa popuni neke istim fotkama a neke ne
 
             images[urlRequest] = .inProgress(task)
 
