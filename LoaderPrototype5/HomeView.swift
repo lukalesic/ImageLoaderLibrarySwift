@@ -32,7 +32,15 @@ struct HomeView: View {
                 "https://source.unsplash.com/random/502x502",
                 "https://source.unsplash.com/random/503x503",
                 "https://source.unsplash.com/random/505x505",
-                "https://source.unsplash.com/random/506x506",
+                "https://source.unsplash.com/random/504x504",
+                "https://source.unsplash.com/random/507x507",
+                "https://source.unsplash.com/random/508x508",
+                "https://source.unsplash.com/random/509x509",
+                "https://source.unsplash.com/random/510x510",
+                "https://source.unsplash.com/random/511x511",
+                "https://source.unsplash.com/random/512x512",
+                "https://source.unsplash.com/random/513x513",
+                "https://source.unsplash.com/random/514x514",
             ].map { URL(string: $0)! }
            
      
