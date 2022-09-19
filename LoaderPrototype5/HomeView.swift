@@ -37,12 +37,8 @@ struct HomeView: View {
            
      
             ScrollView{
-               
                 LazyVGrid(columns: columns, spacing: 3){
-                   
                     ForEach(0..<posters.count){posterIndex in
-                        
-                        
                         LoaderView(source: posters[posterIndex])
                             .padding(3)
                     }

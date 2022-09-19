@@ -36,10 +36,8 @@ actor Loader{
         
      
         let task: Task<UIImage, Error> = Task {
-            
                 let (imageData, _) = try await URLSession.shared.data(for: urlRequest)
                 let image = UIImage(data: imageData)!
-        
                 return image
             }
         
@@ -70,16 +68,6 @@ actor Loader{
             return
         }
         try data.write(to: url)
-    }
-    
-    
-    private func imageFromFiles(for urlRequest: URLRequest) throws -> UIImage? {
-        guard let url = fileName(for: urlRequest) else {
-            assertionFailure("Unable to generate a local path for \(urlRequest)")
-            return nil
-        }
-        let data = try Data(contentsOf: url)
-           return UIImage(data: data)
     }
     
     private func fileName(for urlRequest: URLRequest) -> URL? {
