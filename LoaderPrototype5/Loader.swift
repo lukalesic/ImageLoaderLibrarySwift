@@ -43,21 +43,19 @@ actor Loader{
         
      
         let task: Task<UIImage, Error> = Task {
-        
+            do {
                 let (imageData, _) = try await URLSession.shared.data(for: urlRequest)
                 let image = UIImage(data: imageData)!
-   
                 return image
+            } catch {
+                throw InternetError.noInternet
             }
+        }
+        
                 
         do{
             images[urlRequest] = .inProgress(task)
             var image = try await task.value
-            if image == nil {
-                print("Error test")
-                throw InternetError.noInternet
-              
-            }
             if let imageFromCache = imageCache.object(forKey: urlRequest as AnyObject) as? UIImage {
                 image = imageFromCache
                 return image
@@ -67,7 +65,7 @@ actor Loader{
             imageCache.setObject(image, forKey: urlRequest as AnyObject)
             return image
         }
-        catch {
+        catch InternetError.noInternet{
             print("Error displaying images")
             let image = UIImage()
             return image
