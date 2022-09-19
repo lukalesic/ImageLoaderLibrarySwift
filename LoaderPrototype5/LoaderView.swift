@@ -23,26 +23,34 @@ struct LoaderView: View {
         self.source = source
     }
     
+    
+    
     var body: some View {
             
+        
         let placeholder = RoundedRectangle(cornerRadius: 12.0)
             .frame(width:80, height: 100)
             .foregroundColor(Color.init(hue: 0.0, saturation: 0.0, brightness: 84.0))
         
-        Group {
+        Group { 
             if let image = image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 115, height: 150)
                     .cornerRadius(12.0)
-            } else {
+            }
+            else {
+                
                 ZStack{
                     placeholder
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
+                    
                 }
+              
             }
+            
         }
         .task {
             await loadImage(at: source)
