@@ -11,7 +11,7 @@ import SwiftUI
 private enum ImageStatus {
       case inProgress(Task<UIImage, Error>)
       case fetched(UIImage)
-     // case failed(Error)
+      case failed(Error)
   }
 
 enum InternetError: Error {
@@ -23,7 +23,7 @@ actor Loader{
     let queue = DispatchQueue.global(qos: .background)
     let semaphore = DispatchSemaphore(value: 3)
     let imageCache = NSCache<AnyObject, AnyObject>()
-    var error = false
+    //var error = false
     
     public func loadImage(url: URL) async throws -> UIImage {
         let request = URLRequest(url: url)
@@ -37,7 +37,7 @@ actor Loader{
                         return image
             case .inProgress(let task):
                         return try await task.value
-          //  case .failed(let error): return error
+            case .failed(_): images.removeValue(forKey: urlRequest)
             }
         }
         
@@ -45,8 +45,14 @@ actor Loader{
         let task: Task<UIImage, Error> = Task {
             do {
                 let (imageData, _) = try await URLSession.shared.data(for: urlRequest)
-                let image = UIImage(data: imageData)!
-                return image
+                if imageData != nil {
+                    let image = UIImage(data: imageData)!
+                    return image
+                }
+                else {
+                   let image = UIImage(systemName: "wifi.exclamationmark")!
+                    return image
+                }
             } catch {
                 throw InternetError.noInternet
             }
