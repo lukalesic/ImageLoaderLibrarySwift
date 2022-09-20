@@ -16,6 +16,7 @@ private enum ImageStatus {
 
 enum InternetError: Error {
     case noInternet
+    case invalidServerResponse
 }
 
 actor Loader{
@@ -44,15 +45,18 @@ actor Loader{
      
         let task: Task<UIImage, Error> = Task {
             do {
-                let (imageData, _) = try await URLSession.shared.data(for: urlRequest)
-                if imageData != nil {
-                    let image = UIImage(data: imageData)!
-                    return image
+                let (imageData, response) = try await URLSession.shared.data(for: urlRequest)
+                
+                guard let httpResponse = response as? HTTPURLResponse,
+                        httpResponse.statusCode == 200 else {
+                    throw InternetError.invalidServerResponse
+                  }
+                
+                guard let image = UIImage(data: imageData) else {
+                    throw InternetError.noInternet
                 }
-                else {
-                   let image = UIImage(systemName: "wifi.exclamationmark")!
-                    return image
-                }
+                return image
+          
             } catch {
                 throw InternetError.noInternet
             }
@@ -73,7 +77,7 @@ actor Loader{
         }
         catch InternetError.noInternet{
             print("Error displaying images")
-            let image = UIImage()
+            let image = UIImage(systemName: "wifi.exclamationmark")!
             return image
         }
          
