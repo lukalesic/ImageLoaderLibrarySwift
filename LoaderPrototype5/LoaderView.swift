@@ -27,7 +27,6 @@ struct LoaderView: View {
     
     var body: some View {
             
-        
         let placeholder = RoundedRectangle(cornerRadius: 12.0)
             .frame(width:80, height: 100)
             .foregroundColor(Color.init(hue: 0.0, saturation: 0.0, brightness: 84.0))
@@ -36,7 +35,8 @@ struct LoaderView: View {
             if let image = image {
                 Image(uiImage: image)
                     .resizable()
-                    .scaledToFill()
+                    .aspectRatio(contentMode: .fit)
+                   // .scaledToFill()
                     .frame(width: 115, height: 150)
                     .cornerRadius(12.0)
             }
@@ -46,9 +46,8 @@ struct LoaderView: View {
                     placeholder
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
-                    
                 }
-              
+
             }
             
         }
