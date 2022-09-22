@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var showingAlert = false
+    
     var body: some View {
         NavigationView {
             let dispatchGroup = DispatchGroup()
@@ -15,9 +17,9 @@ struct HomeView: View {
             let dispatchSemaphore = DispatchSemaphore(value: 4)
             
             let columns = [
-                    GridItem(.flexible(), spacing: 14),
-                    GridItem(.flexible(), spacing: 14),
-                    GridItem(.flexible(), spacing: 14)]
+                GridItem(.flexible(), spacing: 14),
+                GridItem(.flexible(), spacing: 14),
+                GridItem(.flexible(), spacing: 14)]
             
             let posters = [
                 "https://image.tmdb.org/t/p/original//pThyQovXQrw2m0s9x82twj48Jq4.jpg",
@@ -42,16 +44,19 @@ struct HomeView: View {
                 "https://source.unsplash.com/random/513x513",
                 "https://source.unsplash.com/random/514x514",
             ].map { URL(string: $0)! }
-           
-     
+            
+            
             ScrollView{
                 LazyVGrid(columns: columns, spacing: 3){
                     ForEach(0..<posters.count){posterIndex in
                         LoaderView(source: posters[posterIndex])
                             .padding(3)
                     }
+                    .alert("Important message", isPresented: self.$showingAlert) {
+                        Button("OK", role: .cancel) { } }
                 }.padding()
             }.navigationTitle("Loader")
         }
     }
 }
+
