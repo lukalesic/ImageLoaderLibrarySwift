@@ -5,18 +5,9 @@
 //  Created by Luka Lešić on 15.09.2022..
 //
 
-
-/*
- let alert =  UIAlertController(title: "Alert", message: "No internet connection", preferredStyle: .alert)
- alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
- NSLog("The \"OK\" alert occured.")
- }))
- 
- self.present(alert, animated: true, completion: nil)
- 
- */
-
 import SwiftUI
+import Dispatch
+import Foundation
 
 struct LoaderView: View {
     
@@ -64,7 +55,7 @@ struct LoaderView: View {
         do {
             image = try await imageLoader.loadImage(source)
         } catch {
-            print(error)
+            print("error in loaderView")
         }
     }
     

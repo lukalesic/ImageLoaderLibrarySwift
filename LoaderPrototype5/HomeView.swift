@@ -11,10 +11,13 @@ struct HomeView: View {
     @State private var showingAlert = false
     
     var body: some View {
+        let imageQueue = OperationQueue()
+      
         NavigationView {
-            let dispatchGroup = DispatchGroup()
-            let queue = DispatchQueue.global(qos: .background)
-            let dispatchSemaphore = DispatchSemaphore(value: 4)
+         
+           // let dispatchGroup = DispatchGroup()
+           // let queue = DispatchQueue.global(qos: .background)
+           // let dispatchSemaphore = DispatchSemaphore(value: 4)
             
             let columns = [
                 GridItem(.flexible(), spacing: 14),
