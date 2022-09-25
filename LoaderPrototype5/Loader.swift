@@ -34,9 +34,15 @@ enum InternetError: Error {
 
 actor Loader{
     
-    private var images: [URLRequest: ImageStatus] = [:]
-    let queue = DispatchQueue.global(qos: .background)
+   private var images: [URLRequest: ImageStatus] = [:]
     let imageCache = NSCache<AnyObject, AnyObject>()
+    let session: URLSession = .shared
+    
+    let queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 3
+        return queue
+    }()
 
     @Published private(set) var error: InternetError?
     @Published var hasError = false
@@ -47,7 +53,47 @@ actor Loader{
         return try await loadImage(request)
     }
     
-    public func loadImage(_ urlRequest: URLRequest) async throws -> UIImage {
+ 
+    public func loadImage(_ request: URLRequest) async throws -> UIImage {
+        switch images[request] {
+        case .fetched(let image):
+            return image
+
+        case .inProgress(let task):
+            return try await task.value
+
+        case .failure(let error):
+            throw error
+
+        case nil:
+            let task: Task<UIImage, Error> = Task {
+                try await withCheckedThrowingContinuation { continuation in
+                    let operation = ImageRequestOperation(session: session, request: request) { [weak self] result in
+                        DispatchQueue.main.async {
+                            switch result {
+                            case .failure(let error):
+                                continuation.resume(throwing: error)
+
+                            case .success(let image):
+                                continuation.resume(returning: image)
+                            }
+                        }
+                    }
+
+                    queue.addOperation(operation)
+                }
+            }
+
+            images[request] = .inProgress(task)
+
+            return try await task.value
+        }
+    }
+    
+    
+    
+    
+/*    public func loadImage(_ urlRequest: URLRequest) async throws -> UIImage {
         if let status = images[urlRequest]{
             switch status{
             case .fetched(let image):
@@ -59,7 +105,6 @@ actor Loader{
                 self.error = error as? InternetError
             }
         }
-        
         
         let task: Task<UIImage, Error> = Task {
             do {
@@ -101,86 +146,205 @@ actor Loader{
             imageCache.setObject(image, forKey: urlRequest as AnyObject)
             return image
         }
+    } */
+    
+    class ImageRequestOperation: DataRequestOperation {
+        init(session: URLSession, request: URLRequest, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
+            super.init(session: session, request: request) { result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async { completionHandler(.failure(error)) }
+
+                case .success(let data):
+                    guard let image = UIImage(data: data) else {
+                        DispatchQueue.main.async { completionHandler(.failure(URLError(.badServerResponse))) }
+                        return
+                    }
+
+                    DispatchQueue.main.async { completionHandler(.success(image)) }
+                }
+            }
+        }
     }
+
+    class DataRequestOperation: AsynchronousOperation {
+        private var task: URLSessionDataTask!
+
+        init(session: URLSession, request: URLRequest, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+            super.init()
+
+            task = session.dataTask(with: request) { data, response, error in
+                guard
+                    let data = data,
+                    let response = response as? HTTPURLResponse,
+                    200 ..< 300 ~= response.statusCode
+                else {
+                    completionHandler(.failure(error ?? URLError(.badServerResponse)))
+                    return
+                }
+
+                completionHandler(.success(data))
+
+                self.finish()
+            }
+        }
+
+        override func main() {
+            task.resume()
+        }
+
+        override func cancel() {
+            super.cancel()
+
+            task.cancel()
+        }
+    }
+    
+    class AsynchronousOperation: Operation {
+        enum OperationState: Int {
+            case ready
+            case executing
+            case finished
+        }
+
+        @Atomic var state: OperationState = .ready {
+            willSet {
+                willChangeValue(forKey: #keyPath(isExecuting))
+                willChangeValue(forKey: #keyPath(isFinished))
+            }
+
+            didSet {
+                didChangeValue(forKey: #keyPath(isFinished))
+                didChangeValue(forKey: #keyPath(isExecuting))
+            }
+        }
+
+        override var isReady: Bool        { state == .ready && super.isReady }
+        override var isExecuting: Bool    { state == .executing }
+        override var isFinished: Bool     { state == .finished }
+        override var isAsynchronous: Bool { true }
+
+        override func start() {
+            if isCancelled {
+                state = .finished
+                return
+            }
+
+            state = .executing
+
+            main()
+        }
+
+        /// Subclasses should override this method, but *not* call this `super` rendition.
+
+        override func main() {
+            assertionFailure("The `main` method should be overridden in concrete subclasses of this abstract class.")
+        }
+
+        func finish() {
+            state = .finished
+        }
+    }
+
+    
+    @propertyWrapper
+    struct Atomic<T> {
+        var _wrappedValue: T
+        let lock = NSLock()
+
+        var wrappedValue: T {
+            get { synchronized { _wrappedValue } }
+            set { synchronized { _wrappedValue = newValue } }
+        }
+
+        init(wrappedValue: T) {
+            _wrappedValue = wrappedValue
+        }
+
+        func synchronized<T>(block: () throws -> T) rethrows -> T {
+            lock.lock()
+            defer { lock.unlock() }
+            return try block()
+        }
+    }
+
+    
+    
+    
+    //loader  ends here
 }
 
 
 
-class DownloadOperation : Operation {
+
+/*
+class DownloadOperation: Operation {
+    private var task: URLSessionDataTask!
     
-    private var task : URLSessionDownloadTask!
+    init(session: URLSession, downloadTaskURL: URLRequest, completionHandler: ((URL?, URLResponse?, Error?) -> Void)?) {
+           super.init()
+           
+           // use weak self to prevent retain cycle
+           task = session.dataTask(with: downloadTaskURL, completionHandler: { [weak self] (URLRequest, response, error) in
+               
+   
+               
+              /*
+                set the operation state to finished once
+                the download task is completed or have error
+              */
+               self?.state = .finished
+           })
+       }
     
     enum OperationState : Int {
-        case ready
-        case executing
-        case finished
-    }
-    
-    // default state is ready (when the operation is created)
-    private var state : OperationState = .ready {
-        willSet {
-            self.willChangeValue(forKey: "isExecuting")
-            self.willChangeValue(forKey: "isFinished")
+            case ready
+            case executing
+            case finished
         }
-        
-        didSet {
-            self.didChangeValue(forKey: "isExecuting")
-            self.didChangeValue(forKey: "isFinished")
-        }
-    }
-    
-    override var isReady: Bool { return state == .ready }
-    override var isExecuting: Bool { return state == .executing }
-    override var isFinished: Bool { return state == .finished }
-  
-    init(session: URLSession, downloadTaskURL: URLRequest, completionHandler: ((URL?, URLResponse?, Error?) -> Void)?) {
-        super.init()
-        
-        // use weak self to prevent retain cycle
-        task = session.downloadTask(with: downloadTaskURL, completionHandler: { [weak self] (localURL, response, error) in
-            
-            /*
-            if there is a custom completionHandler defined,
-            pass the result gotten in downloadTask's completionHandler to the
-            custom completionHandler
-            */
-            if let completionHandler = completionHandler {
-                // localURL is the temporary URL the downloaded file is located
-                completionHandler(localURL, response, error)
-            }
-            
-           /*
-             set the operation state to finished once
-             the download task is completed or have error
-           */
-            self?.state = .finished
-        })
-    }
 
-    override func start() {
-      /*
-      if the operation or queue got cancelled even
-      before the operation has started, set the
-      operation state to finished and return
-      */
-      if(self.isCancelled) {
-          state = .finished
-          return
+    private var state : OperationState = .ready {
+          willSet {
+              self.willChangeValue(forKey: "isExecuting")
+              self.willChangeValue(forKey: "isFinished")
+          }
+          
+          didSet {
+              self.didChangeValue(forKey: "isExecuting")
+              self.didChangeValue(forKey: "isFinished")
+          }
       }
       
-      // set the state to executing
-      state = .executing
-      
-      print("downloading \(self.task.originalRequest?.url?.absoluteString ?? "")")
-            
-      // start the downloading
-      self.task.resume()
-  }
-
-  override func cancel() {
-      super.cancel()
+      override var isReady: Bool { return state == .ready }
+      override var isExecuting: Bool { return state == .executing }
+      override var isFinished: Bool { return state == .finished }
     
-      // cancel the downloading
-      self.task.cancel()
-  }
+    
+    override func start() {
+         /*
+         if the operation or queue got cancelled even
+         before the operation has started, set the
+         operation state to finished and return
+         */
+         if(self.isCancelled) {
+             state = .finished
+             return
+         }
+         
+         // set the state to executing
+         state = .executing
+         
+         print("downloading")
+               
+         // start the downloading
+         self.task.resume()
+     }
+
+     override func cancel() {
+         super.cancel()
+       
+         // cancel the downloading
+         self.task.cancel()
+     }
 }
+*/
