@@ -8,8 +8,6 @@
 import Foundation
 import SwiftUI
 import Dispatch
-import DispatchIntrospection
-
 
 
 private enum ImageStatus {
@@ -235,7 +233,6 @@ actor Loader{
             main()
         }
 
-        /// Subclasses should override this method, but *not* call this `super` rendition.
 
         override func main() {
             assertionFailure("The `main` method should be overridden in concrete subclasses of this abstract class.")
@@ -267,84 +264,5 @@ actor Loader{
             return try block()
         }
     }
-
-    
-    
-    
-    //loader  ends here
 }
 
-
-
-
-/*
-class DownloadOperation: Operation {
-    private var task: URLSessionDataTask!
-    
-    init(session: URLSession, downloadTaskURL: URLRequest, completionHandler: ((URL?, URLResponse?, Error?) -> Void)?) {
-           super.init()
-           
-           // use weak self to prevent retain cycle
-           task = session.dataTask(with: downloadTaskURL, completionHandler: { [weak self] (URLRequest, response, error) in
-               
-   
-               
-              /*
-                set the operation state to finished once
-                the download task is completed or have error
-              */
-               self?.state = .finished
-           })
-       }
-    
-    enum OperationState : Int {
-            case ready
-            case executing
-            case finished
-        }
-
-    private var state : OperationState = .ready {
-          willSet {
-              self.willChangeValue(forKey: "isExecuting")
-              self.willChangeValue(forKey: "isFinished")
-          }
-          
-          didSet {
-              self.didChangeValue(forKey: "isExecuting")
-              self.didChangeValue(forKey: "isFinished")
-          }
-      }
-      
-      override var isReady: Bool { return state == .ready }
-      override var isExecuting: Bool { return state == .executing }
-      override var isFinished: Bool { return state == .finished }
-    
-    
-    override func start() {
-         /*
-         if the operation or queue got cancelled even
-         before the operation has started, set the
-         operation state to finished and return
-         */
-         if(self.isCancelled) {
-             state = .finished
-             return
-         }
-         
-         // set the state to executing
-         state = .executing
-         
-         print("downloading")
-               
-         // start the downloading
-         self.task.resume()
-     }
-
-     override func cancel() {
-         super.cancel()
-       
-         // cancel the downloading
-         self.task.cancel()
-     }
-}
-*/
