@@ -55,6 +55,7 @@ actor Loader{
     public func loadImage(_ request: URLRequest) async throws -> UIImage {
         switch images[request] {
         case .fetched(let image):
+            self.imageCache.setObject(image, forKey: request as AnyObject)
             return image
 
         case .inProgress(let task):
@@ -88,77 +89,21 @@ actor Loader{
         }
     }
     
-    
-    
-    
-/*    public func loadImage(_ urlRequest: URLRequest) async throws -> UIImage {
-        if let status = images[urlRequest]{
-            switch status{
-            case .fetched(let image):
-                return image
-            case .inProgress(let task):
-                return try await task.value
-            case .failure(let error):
-                self.hasError = true
-                self.error = error as? InternetError
-            }
-        }
-        
-        let task: Task<UIImage, Error> = Task {
-            do {
-                let imageQueue = OperationQueue()
-                imageQueue.maxConcurrentOperationCount = 1
-                
-                            
-                let (imageData, response) = try await URLSession.shared.data(for: urlRequest)
-                
-                guard let httpResponse = response as? HTTPURLResponse,
-                      httpResponse.statusCode == 200 else {
-                    throw InternetError.invalidServerResponse
-                }
-                
-                guard let image = UIImage(data: imageData) else {
-                    throw InternetError.noInternet
-                }
-                
-                return image
-            }
-            catch {
-                self.hasError = true
-                images[urlRequest] = .failure(error)
-                print("error caught in Loader")
-                let image = UIImage(systemName: "wifi.exclamationmark")!
-                return image
-            }
-        }
-        
-        do{
-            images[urlRequest] = .inProgress(task)
-            var image = try await task.value
-            if let imageFromCache = imageCache.object(forKey: urlRequest as AnyObject) as? UIImage {
-                image = imageFromCache
-                return image
-            }
-            images[urlRequest] = .fetched(image)
-            //storing image in cache
-            imageCache.setObject(image, forKey: urlRequest as AnyObject)
-            return image
-        }
-    } */
-    
+  
     class ImageRequestOperation: DataRequestOperation {
         init(session: URLSession, request: URLRequest, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
             super.init(session: session, request: request) { result in
                 switch result {
                 case .failure(let error):
-                    DispatchQueue.main.async { completionHandler(.failure(error)) }
+                    DispatchQueue.main.async { completionHandler(.failure(error))
+                        let image = UIImage(systemName: "wifi.exclamationmark")!
+                    }
 
                 case .success(let data):
                     guard let image = UIImage(data: data) else {
                         DispatchQueue.main.async { completionHandler(.failure(URLError(.badServerResponse))) }
                         return
                     }
-
                     DispatchQueue.main.async { completionHandler(.success(image)) }
                 }
             }

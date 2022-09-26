@@ -56,6 +56,7 @@ struct LoaderView: View {
             image = try await imageLoader.loadImage(source)
         } catch {
             print("error in loaderView")
+            image = UIImage(systemName: "wifi.exclamationmark")!
         }
     }
     
