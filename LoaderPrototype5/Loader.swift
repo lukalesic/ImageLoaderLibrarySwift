@@ -41,7 +41,6 @@ actor Loader{
     let session: URLSession = .shared
     
     
-    
     let queue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 3
@@ -124,13 +123,7 @@ actor Loader{
             imageCache.removeObject(forKey: key as AnyObject)
         }
         
-        func getImageFromCache(key: String) -> UIImage? {
-            var data = imageCache.object(forKey: key as AnyObject) as? UIImage
-            return data
-        }
-        
-        
-        func loadImageWithUrl(_ url: URL) -> UIImage {
+        func loadImageWithUrl(_ url: URL) -> UIImage? {
             imageURL = url
             
             if let imageFromCache = imageCache.object(forKey: url as AnyObject) as? UIImage {
