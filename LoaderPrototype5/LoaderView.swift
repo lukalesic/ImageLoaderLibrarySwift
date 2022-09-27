@@ -11,8 +11,6 @@ import Foundation
 
 struct LoaderView: View {
     
-    private let dispatchGroup = DispatchGroup()
-    let semaphore = DispatchSemaphore(value: 3)
     private let source: URLRequest
     @State private var image: UIImage?
     
