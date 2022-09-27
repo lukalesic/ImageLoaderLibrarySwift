@@ -12,7 +12,6 @@ import Dispatch
 
 private enum ImageStatus {
     case inProgress(Task<UIImage, Error>)
-    case fetched
     case failure(Error)
 }
 
@@ -32,10 +31,7 @@ enum InternetError: Error {
 
 actor Loader{
     
-    let allowedDiskSize = 100 * 1024 * 1024
-    lazy var URLImageCache: URLCache = {
-        return URLCache(memoryCapacity: 0, diskCapacity: allowedDiskSize, diskPath: "imageCache")
-    }()
+
     
     private var images: [URLRequest: ImageStatus] = [:]
     let session: URLSession = .shared
@@ -48,7 +44,6 @@ actor Loader{
     }()
     
     
-    
     public func loadImage(url: URL) async throws -> UIImage {
         let request = URLRequest(url: url)
         return try await loadImage(request)
@@ -57,17 +52,6 @@ actor Loader{
     public func loadImage(_ request: URLRequest) async throws -> UIImage {
         
         switch images[request] {
-        case .fetched:
-            if let data = self.URLImageCache.cachedResponse(for: request)?.data, let image = UIImage(data: data) {
-                return image
-            }
-            else {
-                //let cachedData = CachedURLResponse(response: response!, data: data!)
-                //self.URLImageCache.storeCachedResponse(cachedData, for: request)
-                let image = UIImage(systemName: "wifi.exclamationmark")!
-                images[request] = .none
-                return image
-            }
             
         case .inProgress(let task):
             return try await task.value
@@ -76,16 +60,29 @@ actor Loader{
             throw error
             
         case nil:
+            let allowedDiskSize = 100 * 1024 * 1024
+            lazy var URLImageCache: URLCache = {
+                return URLCache(memoryCapacity: 0, diskCapacity: allowedDiskSize, diskPath: "imageCache")
+            }()
+
+            
             let task: Task<UIImage, Error> = Task {
+                
+    
+             
                 try await withCheckedThrowingContinuation { continuation in
-                    let operation = ImageRequestOperation(session: session, request: request) { [weak self] result in
+                    let operation = ImageRequestOperation(session: session, request: request, cache: URLImageCache) { [weak self] result in
                         DispatchQueue.main.async {
                             switch result {
                             case .failure(let error):
-                                
+
                                 continuation.resume(throwing: error)
                                 
                             case .success(let image):
+                                
+                             
+
+                                
                                 continuation.resume(returning: image)
                             }
                         }
@@ -102,7 +99,6 @@ actor Loader{
     }
     
     class CustomCacheManager {
-        //cache treba spremati i na disk i ram
         static let instance = CustomCacheManager()
         var imageURL: URL?
         
@@ -158,8 +154,16 @@ actor Loader{
 
 class ImageRequestOperation: DataRequestOperation {
     
-    init(session: URLSession, request: URLRequest, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
-        super.init(session: session, request: request) { result in
+    
+    let allowedDiskSize = 100 * 1024 * 1024
+    lazy var URLImageCache: URLCache = {
+        return URLCache(memoryCapacity: 0, diskCapacity: allowedDiskSize, diskPath: "imageCache")
+    }()
+
+    
+    init(session: URLSession, request: URLRequest, cache: URLCache, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
+        
+        super.init(session: session, request: request, cache: cache) { result in
             
             switch result {
             case .failure(let error):
@@ -169,11 +173,23 @@ class ImageRequestOperation: DataRequestOperation {
                 
             case .success(let data):
                 
+                if let data = cache.cachedResponse(for: request)?.data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async { completionHandler(.success(image)) }
+                    return
+                  }
+                  else {
+                      //let cachedData = CachedURLResponse(response: response!, data: data!)
+                      //self.URLImageCache.storeCachedResponse(cachedData, for: request)
+                      let image = UIImage(systemName: "highlighter")!
+                      //ovdje ide kod za dodavanje u cache
+                      DispatchQueue.main.async { completionHandler(.success(image)) }
+                      return
+                  }
+                
                 guard let image = UIImage(data: data) else {
                     DispatchQueue.main.async { completionHandler(.failure(URLError(.badServerResponse))) }
                     return
                 }
-                DispatchQueue.main.async { completionHandler(.success(image)) }
             }
         }
     }
@@ -182,7 +198,7 @@ class ImageRequestOperation: DataRequestOperation {
 class DataRequestOperation: AsynchronousOperation {
     private var task: URLSessionDataTask!
     
-    init(session: URLSession, request: URLRequest, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    init(session: URLSession, request: URLRequest, cache: URLCache, completionHandler: @escaping (Result<Data, Error>) -> Void) {
         super.init()
         
         task = session.dataTask(with: request) { data, response, error in
@@ -202,6 +218,7 @@ class DataRequestOperation: AsynchronousOperation {
     }
     
     override func main() {
+        
         task.resume()
     }
     
