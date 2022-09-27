@@ -160,15 +160,21 @@ class ImageRequestOperation: DataRequestOperation {
             case .success(let data):
                 
                 if let data = cache.cachedResponse(for: request)?.data, let image = UIImage(data: data) {
-                    DispatchQueue.main.async { completionHandler(.success(image)) }
                     return
                   }
-                  else {
-                      //let cachedData = CachedURLResponse(response: response!, data: data!)
-                      //self.URLImageCache.storeCachedResponse(cachedData, for: request)
-                      let image = UIImage(systemName: "highlighter")!
-                      //ovdje ide kod za dodavanje u cache
-                      DispatchQueue.main.async { completionHandler(.success(image)) }
+                else {
+                    //ovdje ide kod za dodavanje u cache
+                    let dataTask = URLSession.shared.dataTask(with: request) {data, response, _ in
+                                      if let data = data {
+                                          let cachedData = CachedURLResponse(response: response!, data: data)
+                                          cache.storeCachedResponse(cachedData, for: request)
+                                          let image = UIImage(data: data)
+                                          DispatchQueue.main.async { completionHandler(.success(image!)) }
+
+                            }
+                    }
+                    dataTask.resume()
+
                       return
                   }
                 
