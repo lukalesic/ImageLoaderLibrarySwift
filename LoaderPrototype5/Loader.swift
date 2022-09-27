@@ -30,19 +30,14 @@ enum InternetError: Error {
 }
 
 actor Loader{
-    
 
-    
     private var images: [URLRequest: ImageStatus] = [:]
     let session: URLSession = .shared
-    
-    
     let queue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 3
         return queue
     }()
-    
     
     public func loadImage(url: URL) async throws -> UIImage {
         let request = URLRequest(url: url)
@@ -52,7 +47,6 @@ actor Loader{
     public func loadImage(_ request: URLRequest) async throws -> UIImage {
         
         switch images[request] {
-            
         case .inProgress(let task):
             return try await task.value
             
@@ -64,25 +58,17 @@ actor Loader{
             lazy var URLImageCache: URLCache = {
                 return URLCache(memoryCapacity: 0, diskCapacity: allowedDiskSize, diskPath: "imageCache")
             }()
-
             
             let task: Task<UIImage, Error> = Task {
-                
-    
              
                 try await withCheckedThrowingContinuation { continuation in
                     let operation = ImageRequestOperation(session: session, request: request, cache: URLImageCache) { [weak self] result in
                         DispatchQueue.main.async {
                             switch result {
                             case .failure(let error):
-
                                 continuation.resume(throwing: error)
-                                
+                    
                             case .success(let image):
-                                
-                             
-
-                                
                                 continuation.resume(returning: image)
                             }
                         }
