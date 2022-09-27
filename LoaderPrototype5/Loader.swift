@@ -160,6 +160,7 @@ class ImageRequestOperation: DataRequestOperation {
             case .success(let data):
                 
                 if let data = cache.cachedResponse(for: request)?.data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async { completionHandler(.success(image)) }
                     return
                   }
                 else {
@@ -170,10 +171,10 @@ class ImageRequestOperation: DataRequestOperation {
                                           cache.storeCachedResponse(cachedData, for: request)
                                           let image = UIImage(data: data)
                                           DispatchQueue.main.async { completionHandler(.success(image!)) }
-
-                            }
+                                      }
                     }
                     dataTask.resume()
+
 
                       return
                   }
