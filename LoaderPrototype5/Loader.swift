@@ -19,7 +19,7 @@ private enum ImageStatus {
 enum InternetError: Error {
     case noInternet
     case invalidServerResponse
-    d
+    
     var description: String? {
         switch self {
         case .noInternet:
@@ -161,7 +161,6 @@ actor Loader{
             return image
         }
     }
-    
 }
 
 class ImageRequestOperation: DataRequestOperation {
@@ -262,7 +261,6 @@ class AsynchronousOperation: Operation {
         state = .finished
     }
 }
-
 
 @propertyWrapper
 struct Atomic<T> {
