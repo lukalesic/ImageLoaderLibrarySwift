@@ -30,7 +30,7 @@ enum InternetError: Error {
 }
 
 actor Loader{
-
+    
     private var images: [URLRequest: ImageStatus] = [:]
     let session: URLSession = .shared
     let queue: OperationQueue = {
@@ -54,20 +54,21 @@ actor Loader{
             throw error
             
         case nil:
+            //ovaj lazy var ne treba deklarirati unutar funkcije. izvaditi van kao instance varijablu.
             let allowedDiskSize = 100 * 1024 * 1024
             lazy var URLImageCache: URLCache = {
                 return URLCache(memoryCapacity: 0, diskCapacity: allowedDiskSize, diskPath: "imageCache")
             }()
             
             let task: Task<UIImage, Error> = Task {
-             
+                
                 try await withCheckedThrowingContinuation { continuation in
-                    let operation = ImageRequestOperation(session: session, request: request, cache: URLImageCache) { [weak self] result in
+                    let operation = ImageRequestOperation(session: session, request: request, cache: CustomCacheManager.shared) { [weak self] result in
                         DispatchQueue.main.async {
                             switch result {
                             case .failure(let error):
                                 continuation.resume(throwing: error)
-                    
+                                
                             case .success(let image):
                                 continuation.resume(returning: image)
                             }
@@ -83,187 +84,53 @@ actor Loader{
             return try await task.value
         }
     }
+  
     
-    class CustomCacheManager {
-        static let instance = CustomCacheManager()
-        var imageURL: URL?
+    class ImageRequestOperation: DataRequestOperation {
         
-        private init(){}
+        static let customImageCache = CustomCacheManager.shared
         
-        var imageCache: NSCache<AnyObject, AnyObject> {
-            var imageCache = NSCache<AnyObject, AnyObject>()
-            imageCache.countLimit = 200
-            imageCache.totalCostLimit = 1024 * 1024 * 100
-            return imageCache
-        }
-        
-        func saveImageToCache(_ image: UIImage, key: String) {
-            imageCache.setObject(image as UIImage, forKey: key as AnyObject)
-        }
-        
-        func removeImageFromCache(key: String) {
-            imageCache.removeObject(forKey: key as AnyObject)
-        }
-        
-        func loadImageWithUrl(_ url: URL) -> UIImage? {
-            imageURL = url
+        init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
             
-            if let imageFromCache = imageCache.object(forKey: url as AnyObject) as? UIImage {
-                return imageFromCache
-            }
-            
-            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+            super.init(session: session, request: request, cache: Loader.ImageRequestOperation.customImageCache) { result in
                 
-                if error != nil {
-                    print(error as Any)
-                    DispatchQueue.main.async(execute: {
-                    })
-                    return
-                }
-                DispatchQueue.main.async(execute: {
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async { completionHandler(.failure(error))
+                        let image = UIImage(systemName: "wifi.exclamationmark")!
+                    }
                     
-                    if let unwrappedData = data, let imageToCache = UIImage(data: unwrappedData) {
-                        
-                        if self.imageURL == url {
-                            let image = imageToCache
-                            return
+                case .success(let data):
+                    let req = "\(request)"
+                    if let image = Loader.ImageRequestOperation.customImageCache.getImageWithKey(req) {
+                        DispatchQueue.main.async { completionHandler(.success(image)) }
+                        return
+                    }
+                    else {
+                        //ovdje ide kod za dodavanje u cache
+                        let dataTask = URLSession.shared.dataTask(with: request) {data, response, _ in
+                            if let data = data {
+                                let cachedData = CachedURLResponse(response: response!, data: data)
+                                let image = UIImage(data: data)
+                                Loader.ImageRequestOperation.customImageCache.saveImageToCache(image!, key: req)
+                                DispatchQueue.main.async { completionHandler(.success(image!)) }
+                            }
                         }
-                        self.imageCache.setObject(imageToCache, forKey: url as AnyObject)
+                        dataTask.resume()
+                        return
                     }
-                })
-            }).resume()
-            let image = UIImage(systemName: "wifi.exclamationmark")!
-            return image
-        }
-    }
-}
-
-class ImageRequestOperation: DataRequestOperation {
-    
-    
-    let allowedDiskSize = 100 * 1024 * 1024
-    lazy var URLImageCache: URLCache = {
-        return URLCache(memoryCapacity: 0, diskCapacity: allowedDiskSize, diskPath: "imageCache")
-    }()
-
-    
-    init(session: URLSession, request: URLRequest, cache: URLCache, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
-        
-        super.init(session: session, request: request, cache: cache) { result in
-            
-            switch result {
-            case .failure(let error):
-                DispatchQueue.main.async { completionHandler(.failure(error))
-                    let image = UIImage(systemName: "wifi.exclamationmark")!
-                }
-                
-            case .success(let data):
-                
-                if let data = cache.cachedResponse(for: request)?.data, let image = UIImage(data: data) {
-                    DispatchQueue.main.async { completionHandler(.success(image)) }
-                    return
-                  }
-                else {
-                    //ovdje ide kod za dodavanje u cache
-                    let dataTask = URLSession.shared.dataTask(with: request) {data, response, _ in
-                                      if let data = data {
-                                          let cachedData = CachedURLResponse(response: response!, data: data)
-                                          cache.storeCachedResponse(cachedData, for: request)
-                                          let image = UIImage(data: data)
-                                          DispatchQueue.main.async { completionHandler(.success(image!)) }
-                                      }
+                    
+                    guard let image = UIImage(data: data) else {
+                        DispatchQueue.main.async { completionHandler(.failure(URLError(.badServerResponse))) }
+                        return
                     }
-                    dataTask.resume()
-
-
-                      return
-                  }
-                
-                guard let image = UIImage(data: data) else {
-                    DispatchQueue.main.async { completionHandler(.failure(URLError(.badServerResponse))) }
-                    return
                 }
             }
         }
     }
 }
 
-class DataRequestOperation: AsynchronousOperation {
-    private var task: URLSessionDataTask!
-    
-    init(session: URLSession, request: URLRequest, cache: URLCache, completionHandler: @escaping (Result<Data, Error>) -> Void) {
-        super.init()
-        
-        task = session.dataTask(with: request) { data, response, error in
-            guard
-                let data = data,
-                let response = response as? HTTPURLResponse,
-                200 ..< 300 ~= response.statusCode
-            else {
-                completionHandler(.failure(error ?? URLError(.badServerResponse)))
-                return
-            }
-            
-            completionHandler(.success(data))
-            
-            self.finish()
-        }
-    }
-    
-    override func main() {
-        
-        task.resume()
-    }
-    
-    override func cancel() {
-        super.cancel()
-        
-        task.cancel()
-    }
-}
 
-class AsynchronousOperation: Operation {
-    enum OperationState: Int {
-        case ready
-        case executing
-        case finished
-    }
-    
-    @Atomic var state: OperationState = .ready {
-        willSet {
-            willChangeValue(forKey: #keyPath(isExecuting))
-            willChangeValue(forKey: #keyPath(isFinished))
-        }
-        
-        didSet {
-            didChangeValue(forKey: #keyPath(isFinished))
-            didChangeValue(forKey: #keyPath(isExecuting))
-        }
-    }
-    
-    override var isReady: Bool        { state == .ready && super.isReady }
-    override var isExecuting: Bool    { state == .executing }
-    override var isFinished: Bool     { state == .finished }
-    override var isAsynchronous: Bool { true }
-    
-    override func start() {
-        if isCancelled {
-            state = .finished
-            return
-        }
-        state = .executing
-        main()
-    }
-    
-    
-    override func main() {
-        assertionFailure("The `main` method should be overridden in concrete subclasses of this abstract class.")
-    }
-    
-    func finish() {
-        state = .finished
-    }
-}
 
 @propertyWrapper
 struct Atomic<T> {
@@ -285,5 +152,6 @@ struct Atomic<T> {
         return try block()
     }
 }
+
 
 

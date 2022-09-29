@@ -14,6 +14,9 @@
 		DF3C456728D2A468002875D3 /* EnvironmentValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C456628D2A468002875D3 /* EnvironmentValues.swift */; };
 		DF3C456928D2A4AD002875D3 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C456828D2A4AD002875D3 /* Loader.swift */; };
 		DF3C456B28D2A4E0002875D3 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C456A28D2A4E0002875D3 /* LoaderView.swift */; };
+		DF9A086128E582C80058202A /* CustomCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086028E582C80058202A /* CustomCacheManager.swift */; };
+		DF9A086328E583740058202A /* DataRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086228E583740058202A /* DataRequestOperation.swift */; };
+		DF9A086528E5839F0058202A /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086428E5839F0058202A /* AsyncOperation.swift */; };
 		DFAAEEFC28D360DD002EDC43 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAEEFB28D360DD002EDC43 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +29,9 @@
 		DF3C456628D2A468002875D3 /* EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentValues.swift; sourceTree = "<group>"; };
 		DF3C456828D2A4AD002875D3 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		DF3C456A28D2A4E0002875D3 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
+		DF9A086028E582C80058202A /* CustomCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCacheManager.swift; sourceTree = "<group>"; };
+		DF9A086228E583740058202A /* DataRequestOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestOperation.swift; sourceTree = "<group>"; };
+		DF9A086428E5839F0058202A /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		DFAAEEFB28D360DD002EDC43 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,6 +71,9 @@
 				DF3C456628D2A468002875D3 /* EnvironmentValues.swift */,
 				DF3C456A28D2A4E0002875D3 /* LoaderView.swift */,
 				DF3C456828D2A4AD002875D3 /* Loader.swift */,
+				DF9A086428E5839F0058202A /* AsyncOperation.swift */,
+				DF9A086228E583740058202A /* DataRequestOperation.swift */,
+				DF9A086028E582C80058202A /* CustomCacheManager.swift */,
 				DF3C455C28D2A445002875D3 /* Assets.xcassets */,
 				DF3C455E28D2A445002875D3 /* Preview Content */,
 			);
@@ -150,10 +159,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF3C455B28D2A43F002875D3 /* ContentView.swift in Sources */,
+				DF9A086328E583740058202A /* DataRequestOperation.swift in Sources */,
 				DF3C456728D2A468002875D3 /* EnvironmentValues.swift in Sources */,
+				DF9A086128E582C80058202A /* CustomCacheManager.swift in Sources */,
 				DF3C456B28D2A4E0002875D3 /* LoaderView.swift in Sources */,
 				DFAAEEFC28D360DD002EDC43 /* HomeView.swift in Sources */,
 				DF3C456928D2A4AD002875D3 /* Loader.swift in Sources */,
+				DF9A086528E5839F0058202A /* AsyncOperation.swift in Sources */,
 				DF3C455928D2A43F002875D3 /* LoaderPrototype5App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
