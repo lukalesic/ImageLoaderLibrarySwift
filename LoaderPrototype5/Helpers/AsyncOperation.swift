@@ -41,13 +41,33 @@ class AsynchronousOperation: Operation {
         main()
     }
     
-    
     override func main() {
         assertionFailure("The `main` method should be overridden in concrete subclasses of this abstract class.")
     }
     
     func finish() {
         state = .finished
+    }
+}
+
+@propertyWrapper
+struct Atomic<T> {
+    var _wrappedValue: T
+    let lock = NSLock()
+    
+    var wrappedValue: T {
+        get { synchronized { _wrappedValue } }
+        set { synchronized { _wrappedValue = newValue } }
+    }
+    
+    init(wrappedValue: T) {
+        _wrappedValue = wrappedValue
+    }
+    
+    func synchronized<T>(block: () throws -> T) rethrows -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return try block()
     }
 }
 

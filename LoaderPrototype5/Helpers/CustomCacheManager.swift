@@ -11,6 +11,8 @@ import SwiftUI
 class CustomCacheManager {
     
     static let shared = CustomCacheManager()
+    let cacheDirectory = FileManager.SearchPathDirectory.cachesDirectory
+    let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
 
     private init(){}
     
@@ -22,21 +24,25 @@ class CustomCacheManager {
     }
             
     func saveImageToCacheDirectory(_ image: UIImage, key: String) {
+        let randomInt = Int.random(in: 1..<100)
         guard let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
-        let fileName = key
+        let fileName = "file" + String(randomInt)
         let fileURL = cacheDirectory.appendingPathComponent(fileName)
+        
+        print("saved to directory: \(fileURL)")
         guard let data = image.jpegData(compressionQuality: 1) else { return }
         
         do {
                try data.write(to: fileURL)
            } catch let error {
-               print("error saving file with error", error)
+               print("error saving file:", error)
            }
        }
     
     func saveImageToCache(_ image: UIImage, key: String) {
         saveImageToCacheDirectory(image, key: key)
         imageCache.setObject(image as UIImage, forKey: key as AnyObject)
+        print("saved to cache")
     }
     
     func removeImageFromCache(key: String) {
@@ -45,13 +51,10 @@ class CustomCacheManager {
 
     func getImageWithKey(_ key: String) -> UIImage? {
         if let imageFromCache = imageCache.object(forKey: key as AnyObject) as? UIImage {
+            print("Displaying image from memory cache")
             return imageFromCache
         }
         else {
-            //je li ovo trebaju biti instance variables?
-            let cacheDirectory = FileManager.SearchPathDirectory.cachesDirectory
-            let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-
             let paths = NSSearchPathForDirectoriesInDomains(cacheDirectory, userDomainMask, true)
 
             if let dirPath = paths.first {
@@ -62,5 +65,4 @@ class CustomCacheManager {
         }
         return nil
     }
-    
 }

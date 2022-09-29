@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class DataRequestOperation: AsynchronousOperation {
     private var task: URLSessionDataTask!
     
