@@ -6,12 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
 
 class AsynchronousOperation: Operation {
     enum OperationState: Int {
         case ready
         case executing
         case finished
+    }
+    
+    init(completionHandler: @escaping (Result<UIImage, Error>) -> Void){
+        super.init()
     }
     
     @Atomic var state: OperationState = .ready {
