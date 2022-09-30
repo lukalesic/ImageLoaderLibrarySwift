@@ -11,6 +11,7 @@ import Foundation
 
 struct LoaderView: View {
     
+    
     private let source: URLRequest
     @State private var image: UIImage?
     

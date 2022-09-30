@@ -41,14 +41,13 @@ actor Loader{
     }()
     
     public func loadImage(url: URL) async throws -> UIImage {
-        
         let request = URLRequest(url: url)
         return try await loadImage(request)
     }
     
     public func loadImage(_ request: URLRequest) async throws -> UIImage {
-        
         switch images[request] {
+            
         case .inProgress(let task):
             return try await task.value
             
@@ -79,9 +78,6 @@ actor Loader{
             return try await task.value
         }
     }
-    
-    
-
 }
 
 

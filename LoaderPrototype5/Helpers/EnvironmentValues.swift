@@ -18,3 +18,10 @@ extension EnvironmentValues {
         set { self[ImageLoaderKey.self ] = newValue}
     }
 }
+
+var randomString: String {
+   let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+   return String((0..<7).map{ _ in letters.randomElement()! })
+ }
+
+var fileCounter = 0

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class AsynchronousOperation: Operation {
     enum OperationState: Int {
         case ready

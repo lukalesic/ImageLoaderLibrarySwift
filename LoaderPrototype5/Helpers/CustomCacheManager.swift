@@ -22,13 +22,10 @@ class CustomCacheManager {
         imageCache.totalCostLimit = 1024 * 1024 * 100
         return imageCache
     }
-            
-    func saveImageToCacheDirectory(_ image: UIImage, key: String) {
-        let randomInt = Int.random(in: 1..<100)
+           
+    private func saveImageToCacheDirectory(_ image: UIImage, key: String) {
         guard let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
-        let fileName = "file" + String(randomInt)
-        let fileURL = cacheDirectory.appendingPathComponent(fileName)
-        
+        let fileURL = cacheDirectory.appendingPathComponent(key)
         print("saved to directory: \(fileURL)")
         guard let data = image.jpegData(compressionQuality: 1) else { return }
         
@@ -51,7 +48,6 @@ class CustomCacheManager {
 
     func getImageWithKey(_ key: String) -> UIImage? {
         if let imageFromCache = imageCache.object(forKey: key as AnyObject) as? UIImage {
-            print("Displaying image from memory cache")
             return imageFromCache
         }
         else {
