@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CryptoKit
 
 struct ImageLoaderKey: EnvironmentKey {
     static let defaultValue = Loader()
@@ -19,9 +20,9 @@ extension EnvironmentValues {
     }
 }
 
-var randomString: String {
-   let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-   return String((0..<7).map{ _ in letters.randomElement()! })
- }
-
-var fileCounter = 0
+extension String {
+var MD5: String {
+        let computed = Insecure.MD5.hash(data: self.data(using: .utf8)!)
+        return computed.map { String(format: "%02hhx", $0) }.joined()
+    }
+}

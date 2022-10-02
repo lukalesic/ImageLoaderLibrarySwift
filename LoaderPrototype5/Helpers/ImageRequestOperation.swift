@@ -5,9 +5,6 @@
 //  Created by Luka Lešić on 29.09.2022..
 //
 
-//kuzis predajemo vec session.. na sessionu data task zovem i onda taj data spremim u cache i vratim pozivatelju kroz completion handler
-
-
 import Foundation
 import UIKit
 import SwiftUI
@@ -20,17 +17,11 @@ class ImageRequestOperation: AsynchronousOperation {
     var cache: CustomCacheManager
     let completionHandler: (Result<UIImage, Error>) -> Void
     
-    //ukloniti file counter iz env values, ovu funkciju isto - url request najbolje pretvoriti u string, taj urlstring pretvoris u hash. md5 hash? 
-    private static func key(from request: URLRequest) -> String {
-        let key = "file\(fileCounter)"
-        print(key)
-        return key
-    }
     
-    /* private static func key(for key: String) -> String {
-     var myURL = URL(string: key)!
-     return myURL.deletingPathExtension().lastPathComponent
-     }*/
+    private static func key(from request: URLRequest) -> String {
+        let key = "\(request)"
+        return key.MD5
+    }
     
     init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
         self.session = session
@@ -43,10 +34,6 @@ class ImageRequestOperation: AsynchronousOperation {
     
     override func main() {
         let fileKey = ImageRequestOperation.key(from: request)
-        fileCounter += 1
-        
-        //  let req = "\(request)"
-        //  let fileKey = ImageRequestOperation.key(for: req)
         
         if let image = cache.getImageWithKey(fileKey) {
             DispatchQueue.main.async {
@@ -68,10 +55,14 @@ class ImageRequestOperation: AsynchronousOperation {
                     return
                 }
                 
-                let image = UIImage(data: data)
+                guard let image = UIImage(data: data) else {
+                    let image = UIImage(systemName: "wifi.exclamationmark")!
+                    self.completionHandler(.failure(error ?? URLError(.cannotConnectToHost)))
+                    return
+                }
                 print("Adding image to cache")
-                self.cache.saveImageToCache(image!, key: fileKey)
-                DispatchQueue.main.async { self.completionHandler(.success(image!)) }
+                self.cache.saveImageToCache(image, key: fileKey)
+                DispatchQueue.main.async { self.completionHandler(.success(image)) }
                 self.finish()
             }
             task.resume()
