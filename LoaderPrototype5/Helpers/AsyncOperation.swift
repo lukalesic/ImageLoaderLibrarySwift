@@ -15,10 +15,6 @@ class AsynchronousOperation: Operation {
         case finished
     }
     
-    init(completionHandler: @escaping (Result<UIImage, Error>) -> Void){
-        super.init()
-    }
-    
     @Atomic var state: OperationState = .ready {
         willSet {
             willChangeValue(forKey: #keyPath(isExecuting))

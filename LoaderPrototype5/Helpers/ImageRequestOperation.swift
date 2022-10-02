@@ -15,7 +15,12 @@ import SwiftUI
 class ImageRequestOperation: AsynchronousOperation {
     
     private var task: URLSessionDataTask!
+    var session: URLSession
+    var request: URLRequest
+    var cache: CustomCacheManager
+    let completionHandler: (Result<UIImage, Error>) -> Void
     
+    //ukloniti file counter iz env values, ovu funkciju isto - url request najbolje pretvoriti u string, taj urlstring pretvoris u hash. md5 hash? 
     private static func key(from request: URLRequest) -> String {
         let key = "file\(fileCounter)"
         print(key)
@@ -28,66 +33,55 @@ class ImageRequestOperation: AsynchronousOperation {
      }*/
     
     init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
+        self.session = session
+        self.request = request
+        self.cache = cache
+        self.completionHandler = completionHandler
+        super.init()
+    }
+    
+    
+    override func main() {
+        let fileKey = ImageRequestOperation.key(from: request)
+        fileCounter += 1
         
-        super.init { result in
-            
-            switch result {
-                
-            case .failure(let error):
-                let image = UIImage(systemName: "wifi.exclamationmark")!
-                DispatchQueue.main.async { completionHandler(.failure(error)) }
-                
-            case .success(let data):
-                let fileKey = ImageRequestOperation.key(from: request)
-                fileCounter += 1
-                
-                //  let req = "\(request)"
-                //  let fileKey = ImageRequestOperation.key(for: req)
-                
-                if let image = cache.getImageWithKey(fileKey) {
-                    print("Displaying image from cache")
-                    DispatchQueue.main.async { completionHandler(.success(image)) }
-                    self.finish()
-                    return
-                }
-                else {
-                    self.task = session.dataTask(with: request) {data, response, error in
-                        
-                        guard
-                            let data = data,
-                            let response = response as? HTTPURLResponse,
-                            200 ..< 300 ~= response.statusCode
-                        else {
-                            completionHandler(.failure(error ?? URLError(.badServerResponse)))
-                            return
-                        }
-                        
-                        let image = UIImage(data: data)
-                        print("Adding image to cache")
-                        cache.saveImageToCache(image!, key: fileKey)
-                        DispatchQueue.main.async { completionHandler(.success(image!)) }
-                        self.finish()
-                    }
-                    self.task.resume()
-                    return
-                }
-              
-                guard let image = UIImage(data: data) else {
-                    DispatchQueue.main.async { completionHandler(.failure(URLError(.badServerResponse))) }
-                    return
-                }
+        //  let req = "\(request)"
+        //  let fileKey = ImageRequestOperation.key(for: req)
+        
+        if let image = cache.getImageWithKey(fileKey) {
+            DispatchQueue.main.async {
+                print("Displaying image from cache")
+                self.completionHandler(.success(image))
+                self.finish()
+                return
             }
+        }
+        else {
+            task = session.dataTask(with: request) {data, response, error in
+                
+                guard
+                    let data = data,
+                    let response = response as? HTTPURLResponse,
+                    200 ..< 300 ~= response.statusCode
+                else {
+                    self.completionHandler(.failure(error ?? URLError(.badServerResponse)))
+                    return
+                }
+                
+                let image = UIImage(data: data)
+                print("Adding image to cache")
+                self.cache.saveImageToCache(image!, key: fileKey)
+                DispatchQueue.main.async { self.completionHandler(.success(image!)) }
+                self.finish()
+            }
+            task.resume()
+            return
         }
     }
     
-    override func main() {
-       // task.resume()
-    }
-    
     override func cancel() {
+        task.cancel()
         super.cancel()
-        
-       // task.cancel()
     }
 }
 
