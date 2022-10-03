@@ -72,9 +72,7 @@ actor Loader{
                     queue.addOperation(operation)
                 }
             }
-            
             images[request] = .inProgress(task)
-            
             return try await task.value
         }
     }

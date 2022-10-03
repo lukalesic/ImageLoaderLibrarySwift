@@ -11,9 +11,7 @@ import SwiftUI
 class CustomCacheManager {
     
     static let shared = CustomCacheManager()
-    let cacheDirectory = FileManager.SearchPathDirectory.cachesDirectory
-    let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-    
+       
     private init(){}
     
     var imageCache: NSCache<AnyObject, AnyObject> {
@@ -23,10 +21,13 @@ class CustomCacheManager {
         return imageCache
     }
     
+    private func path(for key: String) -> URL {
+        let filePath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        return filePath.appendingPathComponent(key)
+    }
+    
     private func saveImageToCacheDirectory(_ image: UIImage, key: String) {
-        guard let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
-        let fileURL = cacheDirectory.appendingPathComponent(key)
-        print("saved to directory: \(fileURL)")
+        let fileURL = path(for: key)
         guard let data = image.jpegData(compressionQuality: 1) else { return }
         
         do {
@@ -51,14 +52,13 @@ class CustomCacheManager {
             return imageFromCache
         }
         else {
-            let paths = NSSearchPathForDirectoriesInDomains(cacheDirectory, userDomainMask, true)
-            
-            if let dirPath = paths.first {
-                let imageUrl = URL(fileURLWithPath: dirPath).appendingPathComponent(key)
-                let image = UIImage(contentsOfFile: imageUrl.path)
+            let imageURL = path(for: key)
+            if let image = UIImage(contentsOfFile: imageURL.path) {
                 return image
             }
+            else {
+                return nil
+            }
         }
-        return nil
     }
 }

@@ -19,8 +19,8 @@ class ImageRequestOperation: AsynchronousOperation {
     
     
     private static func key(from request: URLRequest) -> String {
-        let key = "\(request)"
-        return key.MD5
+        let key = request.url?.absoluteString
+        return key!.MD5
     }
     
     init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
@@ -31,7 +31,6 @@ class ImageRequestOperation: AsynchronousOperation {
         super.init()
     }
     
-    
     override func main() {
         let fileKey = ImageRequestOperation.key(from: request)
         
@@ -40,7 +39,6 @@ class ImageRequestOperation: AsynchronousOperation {
                 print("Displaying image from cache")
                 self.completionHandler(.success(image))
                 self.finish()
-                return
             }
         }
         else {
@@ -52,6 +50,7 @@ class ImageRequestOperation: AsynchronousOperation {
                     200 ..< 300 ~= response.statusCode
                 else {
                     self.completionHandler(.failure(error ?? URLError(.badServerResponse)))
+                    self.finish()
                     return
                 }
                 
