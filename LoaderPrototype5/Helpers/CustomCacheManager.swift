@@ -29,7 +29,6 @@ class CustomCacheManager {
     private func saveImageToCacheDirectory(_ image: UIImage, key: String) {
         let fileURL = path(for: key)
         guard let data = image.jpegData(compressionQuality: 1) else { return }
-        
         do {
             try data.write(to: fileURL)
         } catch let error {

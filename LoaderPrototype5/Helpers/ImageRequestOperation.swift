@@ -17,7 +17,6 @@ class ImageRequestOperation: AsynchronousOperation {
     var cache: CustomCacheManager
     let completionHandler: (Result<UIImage, Error>) -> Void
     
-    
     private static func key(from request: URLRequest) -> String {
         let key = request.url?.absoluteString
         return key!.MD5
