@@ -55,14 +55,10 @@ class ImageRequestOperation: AsynchronousOperation {
                     return
                 }
                 
-                guard let image = UIImage(data: data) else {
-                    let image = UIImage(systemName: "wifi.exclamationmark")!
-                    self.completionHandler(.failure(error ?? URLError(.cannotConnectToHost)))
-                    return
-                }
+                let image = UIImage(data: data)
                 print("Adding image to cache")
-                self.cache.saveImageToCache(image, key: fileKey)
-                DispatchQueue.main.async { self.completionHandler(.success(image)) }
+                self.cache.saveImageToCache(image!, key: fileKey)
+                DispatchQueue.main.async { self.completionHandler(.success(image!)) }
                 self.finish()
             }
             task.resume()
