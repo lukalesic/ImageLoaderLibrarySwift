@@ -52,7 +52,8 @@ struct LoaderView: View {
     
     func loadImage(at source: URLRequest) async {
         do {
-            image = try await imageLoader.loadImage(source)
+            print(":)")
+          //  image = try await imageLoader.loadImage(source)
         } catch {
             print("error in loaderView")
             image = UIImage(systemName: "wifi.exclamationmark")!
