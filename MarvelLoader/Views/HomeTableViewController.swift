@@ -13,8 +13,6 @@ class HomeTableViewController: UIViewController {
     var tableView = UITableView()
     var comicBook: ComicBook?
         
-    
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -62,7 +60,6 @@ class HomeTableViewController: UIViewController {
         tableView.frame = view.bounds
     }
 }
-
 
 extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     

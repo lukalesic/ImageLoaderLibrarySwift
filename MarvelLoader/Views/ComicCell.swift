@@ -38,11 +38,17 @@ class ComicCell: UITableViewCell {
         let imagePath = path + "." + ext
         let imageURL = URL(string: imagePath)!
         
-           comicImageView.sd_setImage(with: URL(string: imagePath), placeholderImage: nil, options: .continueInBackground) { (image, error, cache, url) in
-        }
-
-  
         
+        Task {
+            do{
+               let downloadedImage = try await loader.loadImage(url: imageURL)
+                self.comicImageView.image = downloadedImage as! UIImage
+            }
+            catch{
+                print("error")
+            }
+        }
+  
     }
     
     func configureImageView() {

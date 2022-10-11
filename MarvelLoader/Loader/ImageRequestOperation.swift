@@ -59,24 +59,25 @@ class ImageRequestOperation: AsynchronousOperation {
                             
                             if let data = data{
                                 do {
-                                    
-                                    //dakle, meni se povuce links like iz jsona ali ne  i slika. treba ju downloadati pa onda dalje stavljati u cache!
-                                    
-                                 //   let image = try UIImage(data: data) ?? UIImage(systemName: "scribble")!
+                                    //code to download image from Url and then cache, UIImage(data:data) does not return image - append file and ext
+                              //  let image = try UIImage(data: data) ?? UIImage(systemName: "scribble")!
 
-                                    let result = try decode.decode(ComicBook.self, from: data)
-                                    
-                                    
-                                  //  print("Adding image to cache")
-                                 //  self.cache.saveImageToCache(image, key: fileKey)
-                                  //  DispatchQueue.main.async { self.completionHandler(.success(image!)) }
-                                    
-                                    DispatchQueue.main.async {
-                                        print("data loaded!!")
-                                        print(result)
-                                        self.completionHandler(.success(result)) // send back the object on completion
-
+                                    if let image = UIImage(data: data) {
+                                        self.cache.saveImageToCache(image, key: fileKey)
+                                        DispatchQueue.main.async { self.completionHandler(.success(image)) }
                                     }
+                           
+                                    else{
+                                        let result = try decode.decode(ComicBook.self, from: data)
+                                            DispatchQueue.main.async {
+                                                print("data loaded!!")
+                                                print(result)
+                                                self.completionHandler(.success(result)) // send back the object on completion
+
+                                            }
+                                    }
+                                    
+                             
                                     self.finish()
                                 } catch let error{
                                     self.completionHandler(.failure(error))
