@@ -15,7 +15,7 @@ class ImageRequestOperation: AsynchronousOperation {
     var session: URLSession
     var request: URLRequest
     var cache: CustomCacheManager
-    let completionHandler: (Result<ComicBook, Error>) -> Void
+    let completionHandler: (Result<Any, Error>) -> Void
     var comicDataSource: ComicBook?
     
     private static func key(from request: URLRequest) -> String {
@@ -23,7 +23,7 @@ class ImageRequestOperation: AsynchronousOperation {
         return key!.MD5
     }
     
-    init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<ComicBook, Error>) -> Void) {
+    init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<Any, Error>) -> Void) {
         self.session = session
         self.request = request
         self.cache = cache
@@ -35,21 +35,19 @@ class ImageRequestOperation: AsynchronousOperation {
         let fileKey = ImageRequestOperation.key(from: request)
         let decode = JSONDecoder()
         
-        if let image = cache.getImageWithKey(fileKey) {
+//        if let image = cache.getImageWithKey(fileKey) {
+  //          DispatchQueue.main.async {
+    //            print("Displaying image from cache")
+                
+      //       self.completionHandler(.success(image))
+        //       self.finish()
+          //  }
+      //  }
+    // else {
             DispatchQueue.main.async {
-                print("Displaying image from cache")
-         //      self.completionHandler(.success(comic))
-                self.finish()
-            }
-        }
-        else {
-            DispatchQueue.main.async {
-          //      func decoderWithRequest<T: Decodable> (_ type: T.Type, fromURLRequest urlRequest: URLRequest , completionHandler: @escaping (ComicBook?, Error?) -> Void){
-                    
-                    
+                
                 self.task = self.session.dataTask(with: self.request) {data, response, error in
-
-
+                    
                             guard
                                 let response = response as? HTTPURLResponse,
                                 200 ..< 300 ~= response.statusCode
@@ -61,14 +59,21 @@ class ImageRequestOperation: AsynchronousOperation {
                             
                             if let data = data{
                                 do {
+                                    
+                                    //dakle, meni se povuce links like iz jsona ali ne  i slika. treba ju downloadati pa onda dalje stavljati u cache!
+                                    
+                                 //   let image = try UIImage(data: data) ?? UIImage(systemName: "scribble")!
+
                                     let result = try decode.decode(ComicBook.self, from: data)
-                                    let image = UIImage(data: data)
+                                    
+                                    
                                   //  print("Adding image to cache")
-                                  //  self.cache.saveImageToCache(image!, key: fileKey)
+                                 //  self.cache.saveImageToCache(image, key: fileKey)
                                   //  DispatchQueue.main.async { self.completionHandler(.success(image!)) }
                                     
                                     DispatchQueue.main.async {
                                         print("data loaded!!")
+                                        print(result)
                                         self.completionHandler(.success(result)) // send back the object on completion
 
                                     }
@@ -83,7 +88,7 @@ class ImageRequestOperation: AsynchronousOperation {
                 
                 self.finish()
             }
-        }
+      //  }
     }
     
     override func cancel() {

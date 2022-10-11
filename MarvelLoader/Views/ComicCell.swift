@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ComicCell: UITableViewCell {
     
+    let loader = Loader()
     var comicImageView = UIImageView()
     var comicTitleLabel = UILabel()
     
@@ -29,6 +31,18 @@ class ComicCell: UITableViewCell {
     
     func setData(comicBookModel: ComicBookModel?){
         comicTitleLabel.text = comicBookModel?.title
+        
+        let request = URL(string: generatedURL)!
+        
+        guard let path = comicBookModel?.thumbnail?.path, let ext = comicBookModel?.thumbnail?.ext else {return}
+        let imagePath = path + "." + ext
+        let imageURL = URL(string: imagePath)!
+        
+           comicImageView.sd_setImage(with: URL(string: imagePath), placeholderImage: nil, options: .continueInBackground) { (image, error, cache, url) in
+        }
+
+  
+        
     }
     
     func configureImageView() {

@@ -12,19 +12,20 @@ class HomeTableViewController: UIViewController {
     static let loader = Loader()
     var tableView = UITableView()
     var comicBook: ComicBook?
+        
     
-    struct Cells {
-        static let comicCell = "ComicCell"
-    }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         title = "Marvel Loader"
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.red]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         
         Task{
             do {
                 try await self.loadData()
+                tableView.reloadData()
             }
             catch{ print("error") }
         }
@@ -36,7 +37,7 @@ class HomeTableViewController: UIViewController {
         let request = URL(string: generatedURL)!
         
         do{
-            self.comicBook = try await HomeTableViewController.loader.loadImage(url: request)
+            self.comicBook = try await HomeTableViewController.loader.loadImage(url: request) as? ComicBook
         }
         catch{
             print("error")
@@ -66,13 +67,14 @@ class HomeTableViewController: UIViewController {
 extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return comicBook?.data?.comicbooks?.count ?? 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Cells.comicCell) as! ComicCell
         let cbm = comicBook?.data?.comicbooks?[indexPath.row]
         cell.setData(comicBookModel: cbm)
+     
         
         return cell
     }

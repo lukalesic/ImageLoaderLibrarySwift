@@ -11,6 +11,7 @@
 		DF3C455B28D2A43F002875D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C455A28D2A43F002875D3 /* ContentView.swift */; };
 		DF3C455D28D2A445002875D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF3C455C28D2A445002875D3 /* Assets.xcassets */; };
 		DF3C456028D2A445002875D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF3C455F28D2A445002875D3 /* Preview Assets.xcassets */; };
+		DF5FFDDB28F48E64007D91B4 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = DF5FFDDA28F48E64007D91B4 /* SDWebImage */; };
 		DF90283328EC2E6A007EDB01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF90283228EC2E6A007EDB01 /* AppDelegate.swift */; };
 		DF90283528EC2E6A007EDB01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF90283428EC2E6A007EDB01 /* SceneDelegate.swift */; };
 		DF90283C28EC2E6F007EDB01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF90283B28EC2E6F007EDB01 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 		DF90287A28EDB331007EDB01 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086428E5839F0058202A /* AsyncOperation.swift */; };
 		DF90287B28EDB331007EDB01 /* ImageRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086828E598990058202A /* ImageRequestOperation.swift */; };
 		DF90287C28EDB331007EDB01 /* CustomCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086028E582C80058202A /* CustomCacheManager.swift */; };
+		DF9A021428F48C91002E3D06 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = DF9A021328F48C91002E3D06 /* SDWebImage */; };
 		DFAAEEFC28D360DD002EDC43 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAEEFB28D360DD002EDC43 /* HomeView.swift */; };
 		DFF6EC0E28EF0C320098AE0C /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6EC0D28EF0C320098AE0C /* Credentials.swift */; };
 		DFF6EC0F28F4257B0098AE0C /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C456A28D2A4E0002875D3 /* LoaderView.swift */; };
@@ -81,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF9A021428F48C91002E3D06 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF5FFDDB28F48E64007D91B4 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +118,7 @@
 				DF3C455728D2A43F002875D3 /* LoaderPrototype5 */,
 				DF90283128EC2E6A007EDB01 /* MarvelLoader */,
 				DF3C455628D2A43F002875D3 /* Products */,
+				DF5FFDD928F48E64007D91B4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,6 +152,13 @@
 				DF3C455F28D2A445002875D3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DF5FFDD928F48E64007D91B4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		DF90283128EC2E6A007EDB01 /* MarvelLoader */ = {
@@ -228,6 +240,9 @@
 			dependencies = (
 			);
 			name = LoaderPrototype5;
+			packageProductDependencies = (
+				DF9A021328F48C91002E3D06 /* SDWebImage */,
+			);
 			productName = LoaderPrototype5;
 			productReference = DF3C455528D2A43F002875D3 /* LoaderPrototype5.app */;
 			productType = "com.apple.product-type.application";
@@ -245,6 +260,9 @@
 			dependencies = (
 			);
 			name = MarvelLoader;
+			packageProductDependencies = (
+				DF5FFDDA28F48E64007D91B4 /* SDWebImage */,
+			);
 			productName = MarvelLoader;
 			productReference = DF90283028EC2E6A007EDB01 /* MarvelLoader.app */;
 			productType = "com.apple.product-type.application";
@@ -320,6 +338,9 @@
 				Base,
 			);
 			mainGroup = DF3C454C28D2A43F002875D3;
+			packageReferences = (
+				DF9A021228F48C91002E3D06 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = DF3C455628D2A43F002875D3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -619,13 +640,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z8B97J6V7K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MarvelLoader/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -646,13 +668,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z8B97J6V7K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MarvelLoader/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -787,6 +810,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DF9A021228F48C91002E3D06 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DF5FFDDA28F48E64007D91B4 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DF9A021228F48C91002E3D06 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		DF9A021328F48C91002E3D06 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DF9A021228F48C91002E3D06 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DF3C454D28D2A43F002875D3 /* Project object */;
 }
