@@ -220,6 +220,7 @@
 		DF9A086728E58D6E0058202A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				DF3C456628D2A468002875D3 /* EnvironmentValues.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -242,7 +243,6 @@
 				DF9A086828E598990058202A /* ImageRequestOperation.swift */,
 				DF3C456828D2A4AD002875D3 /* Loader.swift */,
 				DF9A086028E582C80058202A /* CustomCacheManager.swift */,
-				DF3C456628D2A468002875D3 /* EnvironmentValues.swift */,
 			);
 			path = Loader;
 			sourceTree = "<group>";
