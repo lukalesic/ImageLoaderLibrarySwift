@@ -30,6 +30,9 @@ class DetailPresentation: NSObject, UITableViewDelegate{
         tableView.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor).isActive = true
 
         tableView.register(NameTableViewCell.self, forCellReuseIdentifier: "NameCell")
+        tableView.register(BioTableViewCell.self, forCellReuseIdentifier: "BioCell")
+        tableView.register(MoreInfoTableViewCell.self, forCellReuseIdentifier: "MoreInfoCell")
+
         tableView.dataSource = dataSource
         tableView.delegate = self
     }
