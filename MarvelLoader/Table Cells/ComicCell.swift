@@ -28,15 +28,12 @@ class ComicCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setData(comicBookModel: ComicBookModel?){
-        comicTitleLabel.text = comicBookModel?.title
-        
+    func loadImageFromServer(comicBookModel: Comic?){
         let request = URL(string: generatedURL)!
         
         guard let path = comicBookModel?.thumbnail?.path, let ext = comicBookModel?.thumbnail?.ext else {return}
         let imagePath = path + "." + ext
         let imageURL = URL(string: imagePath)!
-        
         
         Task {
             do{
@@ -47,12 +44,18 @@ class ComicCell: UITableViewCell {
                 print("error")
             }
         }
-  
+        
+    }
+    
+    func setData(comicBookModel: Comic?){
+        comicTitleLabel.text = comicBookModel?.title
+        loadImageFromServer(comicBookModel: comicBookModel)
     }
     
     func configureImageView() {
         comicImageView.layer.cornerRadius = 10
         comicImageView.clipsToBounds = true
+        
     }
     
     func configureTitleLabel(){
@@ -65,7 +68,8 @@ class ComicCell: UITableViewCell {
         comicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         comicImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12).isActive = true
         comicImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        comicImageView.widthAnchor.constraint(equalTo: comicImageView.heightAnchor, multiplier: 16/9).isActive = true
+      //  comicImageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        comicImageView.widthAnchor.constraint(equalTo: comicImageView.heightAnchor, multiplier: 4/4).isActive = true
     }
     
     func setTitleLabelConstraints(){

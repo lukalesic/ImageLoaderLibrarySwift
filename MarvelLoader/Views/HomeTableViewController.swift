@@ -11,7 +11,7 @@ class HomeTableViewController: UIViewController {
     
     static let loader = Loader()
     var tableView = UITableView()
-    var comicBook: ComicBook?
+    var comicBook: ComicBookBaseData?
         
     override func viewDidLoad() {
         
@@ -35,7 +35,7 @@ class HomeTableViewController: UIViewController {
         let request = URL(string: generatedURL)!
         
         do{
-            self.comicBook = try await HomeTableViewController.loader.loadImage(url: request) as? ComicBook
+            self.comicBook = try await HomeTableViewController.loader.loadImage(url: request) as? ComicBookBaseData
         }
         catch{
             print("error")
@@ -69,12 +69,18 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Cells.comicCell) as! ComicCell
-        let cbm = comicBook?.data?.comicbooks?[indexPath.row]
-        cell.setData(comicBookModel: cbm)
+        let comic = comicBook?.data?.comicbooks?[indexPath.row]
+        cell.setData(comicBookModel: comic)
      
-        
         return cell
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let comic = comicBook?.data?.comicbooks?[indexPath.row]
+        let detailView = DetailViewController()
+        detailView.comicDetail = comic
+        navigationController?.pushViewController(detailView, animated: true)
+        
+    }
 }
-
-

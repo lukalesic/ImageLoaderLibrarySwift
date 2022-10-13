@@ -25,13 +25,14 @@
 		DF90287B28EDB331007EDB01 /* ImageRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086828E598990058202A /* ImageRequestOperation.swift */; };
 		DF90287C28EDB331007EDB01 /* CustomCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086028E582C80058202A /* CustomCacheManager.swift */; };
 		DF9A021428F48C91002E3D06 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = DF9A021328F48C91002E3D06 /* SDWebImage */; };
+		DF9A1D4328F880B20004A940 /* PageCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A1D4228F880B20004A940 /* PageCountTableViewCell.swift */; };
 		DFAAEEFC28D360DD002EDC43 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAEEFB28D360DD002EDC43 /* HomeView.swift */; };
 		DFC22C4928F57AC5000B9444 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4828F57AC5000B9444 /* DetailViewController.swift */; };
 		DFC22C4B28F62CBC000B9444 /* DetailPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */; };
 		DFC22C4D28F62FF5000B9444 /* DetailDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */; };
 		DFC22C4F28F630B8000B9444 /* NameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4E28F630B8000B9444 /* NameTableViewCell.swift */; };
 		DFC22C5228F6C620000B9444 /* BioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C5128F6C620000B9444 /* BioTableViewCell.swift */; };
-		DFC22C5428F6D0B6000B9444 /* MoreInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C5328F6D0B6000B9444 /* MoreInfoTableViewCell.swift */; };
+		DFC22C5428F6D0B6000B9444 /* IssueNumberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C5328F6D0B6000B9444 /* IssueNumberTableViewCell.swift */; };
 		DFF6EC0E28EF0C320098AE0C /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6EC0D28EF0C320098AE0C /* Credentials.swift */; };
 		DFF6EC0F28F4257B0098AE0C /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C456A28D2A4E0002875D3 /* LoaderView.swift */; };
 		DFF6EC1328F435550098AE0C /* Posters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6EC1028F4306B0098AE0C /* Posters.swift */; };
@@ -77,13 +78,14 @@
 		DF9A086028E582C80058202A /* CustomCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCacheManager.swift; sourceTree = "<group>"; };
 		DF9A086428E5839F0058202A /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		DF9A086828E598990058202A /* ImageRequestOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequestOperation.swift; sourceTree = "<group>"; };
+		DF9A1D4228F880B20004A940 /* PageCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCountTableViewCell.swift; sourceTree = "<group>"; };
 		DFAAEEFB28D360DD002EDC43 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DFC22C4828F57AC5000B9444 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresentation.swift; sourceTree = "<group>"; };
 		DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDataSource.swift; sourceTree = "<group>"; };
 		DFC22C4E28F630B8000B9444 /* NameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTableViewCell.swift; sourceTree = "<group>"; };
 		DFC22C5128F6C620000B9444 /* BioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioTableViewCell.swift; sourceTree = "<group>"; };
-		DFC22C5328F6D0B6000B9444 /* MoreInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoTableViewCell.swift; sourceTree = "<group>"; };
+		DFC22C5328F6D0B6000B9444 /* IssueNumberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueNumberTableViewCell.swift; sourceTree = "<group>"; };
 		DFF6EC0D28EF0C320098AE0C /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		DFF6EC1028F4306B0098AE0C /* Posters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -231,7 +233,8 @@
 				DFC22C4E28F630B8000B9444 /* NameTableViewCell.swift */,
 				DF90287228ED845B007EDB01 /* ComicCell.swift */,
 				DFC22C5128F6C620000B9444 /* BioTableViewCell.swift */,
-				DFC22C5328F6D0B6000B9444 /* MoreInfoTableViewCell.swift */,
+				DFC22C5328F6D0B6000B9444 /* IssueNumberTableViewCell.swift */,
+				DF9A1D4228F880B20004A940 /* PageCountTableViewCell.swift */,
 			);
 			path = "Table Cells";
 			sourceTree = "<group>";
@@ -428,7 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DFC22C5428F6D0B6000B9444 /* MoreInfoTableViewCell.swift in Sources */,
+				DFC22C5428F6D0B6000B9444 /* IssueNumberTableViewCell.swift in Sources */,
 				DFC22C4928F57AC5000B9444 /* DetailViewController.swift in Sources */,
 				DF90286B28ED7ECB007EDB01 /* HomeTableViewController.swift in Sources */,
 				DFC22C4B28F62CBC000B9444 /* DetailPresentation.swift in Sources */,
@@ -444,6 +447,7 @@
 				DFF6EC0E28EF0C320098AE0C /* Credentials.swift in Sources */,
 				DF90287A28EDB331007EDB01 /* AsyncOperation.swift in Sources */,
 				DFC22C5228F6C620000B9444 /* BioTableViewCell.swift in Sources */,
+				DF9A1D4328F880B20004A940 /* PageCountTableViewCell.swift in Sources */,
 				DF90287728EDB158007EDB01 /* Loader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

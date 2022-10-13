@@ -31,8 +31,3 @@ struct Cells {
     static let comicCell = "ComicCell"
 }
 
-/*
-private func popView() {
-    popViewController(animated: true)
-}
-*/

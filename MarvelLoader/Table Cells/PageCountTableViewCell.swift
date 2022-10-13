@@ -1,20 +1,20 @@
 //
-//  MoreInfoTableViewCell.swift
+//  PageCountTableViewCell.swift
 //  MarvelLoader
 //
-//  Created by Luka Lešić on 12.10.2022..
+//  Created by Luka Lešić on 13.10.2022..
 //
 
 import UIKit
 
-class MoreInfoTableViewCell: UITableViewCell {
+class PageCountTableViewCell: UITableViewCell {
     
     var desc: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        
+        label.font = label.font.withSize(15)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Placeholder more info text"
+        label.text = "Placeholder page count text"
         
         return label
     }()
@@ -42,4 +42,8 @@ class MoreInfoTableViewCell: UITableViewCell {
         
     }
 
+    func setComicDetails(comic: Comic){
+        if comic.pageCount == 0 {desc.text = "No page count information available"}
+        else{ desc.text = "\(comic.pageCount!) pages"}
+    }
 }

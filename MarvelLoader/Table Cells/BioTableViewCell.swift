@@ -12,7 +12,7 @@ class BioTableViewCell: UITableViewCell {
     var bio: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        
+        label.font = label.font.withSize(15)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Placeholder bio text"
         
@@ -41,7 +41,10 @@ class BioTableViewCell: UITableViewCell {
         
     }
     
-  
+    func setComicData(comic: Comic){
+        if comic.description == "" {bio.text = "No description available for this particular comic."}
+        else {bio.text = comic.description}
+    }
     
   
 }

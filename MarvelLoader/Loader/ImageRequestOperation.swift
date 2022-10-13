@@ -16,7 +16,7 @@ class ImageRequestOperation: AsynchronousOperation {
     var request: URLRequest
     var cache: CustomCacheManager
     let completionHandler: (Result<Any, Error>) -> Void
-    var comicDataSource: ComicBook?
+    var comicDataSource: ComicBookBaseData?
     
     private static func key(from request: URLRequest) -> String {
         let key = request.url?.absoluteString
@@ -63,17 +63,14 @@ class ImageRequestOperation: AsynchronousOperation {
                             else{
                                 self.cache.saveImageToCache(image, key: fileKey)
                                 DispatchQueue.main.async { self.completionHandler(.success(image)) }
-                                
                             }
                         }
                         
                         else{
-                            let result = try decode.decode(ComicBook.self, from: data)
+                            let result = try decode.decode(ComicBookBaseData.self, from: data)
                             DispatchQueue.main.async {
                                 print("data loaded!!")
-                                print(result)
                                 self.completionHandler(.success(result)) // send back the object on completion
-                                
                             }
                         }
                         self.finish()

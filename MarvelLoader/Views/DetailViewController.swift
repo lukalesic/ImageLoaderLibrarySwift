@@ -10,11 +10,14 @@ import UIKit
 class DetailViewController: UIViewController {
     
     var presentation = DetailPresentation()
+    var comicDetail: Comic?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Character View"
+        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.tintColor = UIColor.systemRed
+        title = "Details"
         setup()
     }
     

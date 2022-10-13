@@ -17,12 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navController = UINavigationController(rootViewController: HomeTableViewController())
         navController.navigationBar.prefersLargeTitles = true
         
-       navController.setViewControllers([HomeTableViewController(), DetailViewController()], animated: true)
+     //  navController.setViewControllers([HomeTableViewController(), DetailViewController()], animated: true)
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-       // window?.rootViewController = DetailViewController()
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
         

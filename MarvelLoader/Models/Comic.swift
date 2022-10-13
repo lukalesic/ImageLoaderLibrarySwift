@@ -7,7 +7,7 @@
 import UIKit
 import Foundation
 
-struct ComicBook: Codable {
+struct ComicBookBaseData: Codable {
     let code: Int?
     let data: ComicBookData?
     
@@ -18,17 +18,19 @@ struct ComicBook: Codable {
 }
 
 struct ComicBookData: Codable {
-    let comicbooks: [ComicBookModel]?
+    let comicbooks: [Comic]?
     
     enum CodingKeys: String, CodingKey{
         case comicbooks = "results"
     }
 }
 
-struct ComicBookModel: Codable {
+struct Comic: Codable {
     let id: Int?
     let title: String?
     let description: String?
+    let issueNumber:  Int?
+    let pageCount: Int?
     let thumbnail: Thumbnail?
 }
 
