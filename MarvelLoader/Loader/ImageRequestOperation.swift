@@ -32,9 +32,7 @@ class ImageRequestOperation: AsynchronousOperation {
     }
     
     override func main() {
-        let fileKey = ImageRequestOperation.key(from: request)
-        let decode = JSONDecoder()
-        
+        let fileKey = ImageRequestOperation.key(from: request)        
         DispatchQueue.main.async {
             
             self.task = self.session.dataTask(with: self.request) {data, response, error in
@@ -66,13 +64,6 @@ class ImageRequestOperation: AsynchronousOperation {
                             }
                         }
                         
-                        else{
-                            let result = try decode.decode(ComicBookBaseData.self, from: data)
-                            DispatchQueue.main.async {
-                                print("data loaded!!")
-                                self.completionHandler(.success(result)) // send back the object on completion
-                            }
-                        }
                         self.finish()
                     } catch let error{
                         self.completionHandler(.failure(error))

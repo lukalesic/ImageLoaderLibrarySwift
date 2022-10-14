@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeTableViewController: UIViewController {
+class HomeTableViewController: UIViewController, JSONParsing {
     
     static let loader = Loader()
     var tableView = UITableView()
@@ -35,7 +35,15 @@ class HomeTableViewController: UIViewController {
         let request = URL(string: generatedURL)!
         
         do{
-            self.comicBook = try await HomeTableViewController.loader.loadImage(url: request) as? ComicBookBaseData
+             try await downloadObject(url: request, completionHandler: { result in
+                 switch result {
+                 case .success(let result):
+                     self.comicBook =  result as ComicBookBaseData
+                     self.tableView.reloadData()
+                 case .failure(let error):
+                     print(error)
+                 }
+            })
         }
         catch{
             print("error")
@@ -58,6 +66,26 @@ class HomeTableViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+    }
+    
+    func downloadObject(url: URL, completionHandler: @escaping (Result<ComicBookBaseData, Error>) -> Void) async throws {
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            let decode = JSONDecoder()
+            if let data = data {
+                do{
+                    let result = try decode.decode(ComicBookBaseData.self, from: data)
+                    DispatchQueue.main.async {
+                        print("data loaded!!")
+                        completionHandler(.success(result))
+                    }
+                }
+                catch{print("Error")
+                    completionHandler(.failure(error))
+                }
+            }
+            
+        }
+        task.resume()
     }
 }
 

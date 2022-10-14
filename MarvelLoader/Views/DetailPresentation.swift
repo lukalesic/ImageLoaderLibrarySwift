@@ -81,7 +81,7 @@ extension DetailPresentation: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
-            return setupHeader(title: "Bio", tableView: tableView)
+            return setupHeader(title: "Description", tableView: tableView)
         }else if section == 2 {
             return setupHeader(title: "Issue", tableView: tableView)
         }  else if section == 3 {
