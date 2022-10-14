@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ComicCell: UITableViewCell {
+class ComicCell: UITableViewCell, ImageDownloading {
     
     let loader = Loader()
     var comicImageView = UIImageView()
@@ -28,17 +28,15 @@ class ComicCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func loadImageFromServer(comicBookModel: Comic?){
-        let request = URL(string: generatedURL)!
-        
-        guard let path = comicBookModel?.thumbnail?.path, let ext = comicBookModel?.thumbnail?.ext else {return}
+    func loadImageFromServer(comic: Comic?, imageView: UIImageView){
+        guard let path = comic?.thumbnail?.path, let ext = comic?.thumbnail?.ext else {return}
         let imagePath = path + "." + ext
         let imageURL = URL(string: imagePath)!
         
         Task {
             do{
                let downloadedImage = try await loader.loadImage(url: imageURL)
-                self.comicImageView.image = downloadedImage as! UIImage
+                imageView.image = downloadedImage as! UIImage
             }
             catch{
                 print("error")
@@ -49,7 +47,7 @@ class ComicCell: UITableViewCell {
     
     func setData(comicBookModel: Comic?){
         comicTitleLabel.text = comicBookModel?.title
-        loadImageFromServer(comicBookModel: comicBookModel)
+        loadImageFromServer(comic: comicBookModel, imageView: comicImageView)
     }
     
     func configureImageView() {
@@ -81,3 +79,5 @@ class ComicCell: UITableViewCell {
     }
     
 }
+
+

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NameTableViewCell: UITableViewCell {
+class NameTableViewCell: UITableViewCell, ImageDownloading {
     let loader = Loader()
 
     var titleName: UILabel = {
@@ -73,11 +73,8 @@ class NameTableViewCell: UITableViewCell {
 
         
     }
-
-    func setComicData(comic: Comic?){
-        titleName.text = comic?.title      
-        let request = URL(string: generatedURL)!
-        
+    
+    func loadImageFromServer(comic: Comic?, imageView: UIImageView) {
         guard let path = comic?.thumbnail?.path, let ext = comic?.thumbnail?.ext else {return}
         let imagePath = path + "." + ext
         let imageURL = URL(string: imagePath)!
@@ -85,14 +82,18 @@ class NameTableViewCell: UITableViewCell {
         Task {
             do{
                let downloadedImage = try await loader.loadImage(url: imageURL)
-                self.coverPhoto.image = downloadedImage as! UIImage
+                imageView.image = downloadedImage as! UIImage
             }
             catch{
                 print("error")
             }
         }
-        
-        
+    }
+    
+
+    func setComicData(comic: Comic?){
+        titleName.text = comic?.title
+        loadImageFromServer(comic: comic, imageView: coverPhoto)
     }
     
 }

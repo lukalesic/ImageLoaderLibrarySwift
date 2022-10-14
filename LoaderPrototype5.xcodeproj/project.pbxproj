@@ -26,6 +26,7 @@
 		DF90287C28EDB331007EDB01 /* CustomCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A086028E582C80058202A /* CustomCacheManager.swift */; };
 		DF9A021428F48C91002E3D06 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = DF9A021328F48C91002E3D06 /* SDWebImage */; };
 		DF9A1D4328F880B20004A940 /* PageCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A1D4228F880B20004A940 /* PageCountTableViewCell.swift */; };
+		DF9A1D4528F957D10004A940 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A1D4428F957D10004A940 /* Protocols.swift */; };
 		DFAAEEFC28D360DD002EDC43 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAEEFB28D360DD002EDC43 /* HomeView.swift */; };
 		DFC22C4928F57AC5000B9444 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4828F57AC5000B9444 /* DetailViewController.swift */; };
 		DFC22C4B28F62CBC000B9444 /* DetailPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */; };
@@ -79,6 +80,7 @@
 		DF9A086428E5839F0058202A /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		DF9A086828E598990058202A /* ImageRequestOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequestOperation.swift; sourceTree = "<group>"; };
 		DF9A1D4228F880B20004A940 /* PageCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCountTableViewCell.swift; sourceTree = "<group>"; };
+		DF9A1D4428F957D10004A940 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DFAAEEFB28D360DD002EDC43 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DFC22C4828F57AC5000B9444 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresentation.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 		DF90283128EC2E6A007EDB01 /* MarvelLoader */ = {
 			isa = PBXGroup;
 			children = (
+				DF9A1D4428F957D10004A940 /* Protocols.swift */,
 				DFC22C5028F6C086000B9444 /* Table Cells */,
 				DFF6EC1228F430920098AE0C /* Loader */,
 				DF90287628EDB0F9007EDB01 /* Models */,
@@ -440,6 +443,7 @@
 				DF90283328EC2E6A007EDB01 /* AppDelegate.swift in Sources */,
 				DFC22C4F28F630B8000B9444 /* NameTableViewCell.swift in Sources */,
 				DF90283528EC2E6A007EDB01 /* SceneDelegate.swift in Sources */,
+				DF9A1D4528F957D10004A940 /* Protocols.swift in Sources */,
 				DF90287928EDB1C7007EDB01 /* EnvironmentValues.swift in Sources */,
 				DF90287B28EDB331007EDB01 /* ImageRequestOperation.swift in Sources */,
 				DF90287C28EDB331007EDB01 /* CustomCacheManager.swift in Sources */,
