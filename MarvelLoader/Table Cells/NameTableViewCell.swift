@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PureLayout
 
 class NameTableViewCell: UITableViewCell, ImageDownloading {
     let loader = Loader()
@@ -13,7 +14,6 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
     var titleName: UILabel = {
         let name = UILabel()
         name.numberOfLines = 0
-        name.translatesAutoresizingMaskIntoConstraints = false
         name.text = "Placeholder text"
         name.font = name.font.withSize(23)
 
@@ -25,14 +25,13 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
         view.layer.cornerRadius = 12
         view.backgroundColor = .systemMint
         view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     var coverPhoto: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .systemBlue
-        image.translatesAutoresizingMaskIntoConstraints = false
+      //  image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
@@ -51,27 +50,23 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
         contentView.addSubview(titleName)
         contentView.addSubview(container)
         
-        container.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        container.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        container.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        container.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        
-        
-        var height = titleName.constraints.filter{$0.firstAttribute == .height}.first?.constant ?? 60
-        height = 120 / 2
-        
-        titleName.leadingAnchor.constraint(equalTo: container.trailingAnchor, constant: 10).isActive = true
-        titleName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-        titleName.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: titleName.bottomAnchor, constant: height + 20).isActive = true
-        
+        container.configureForAutoLayout()
+        container.autoSetDimensions(to: CGSize(width: 120, height: 120))
+        container.autoPinEdge(toSuperviewEdge: .left, withInset: 20.0)
+        container.autoPinEdge(toSuperviewEdge: .top, withInset: 20.0)
+        container.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20.0)
+      
+        titleName.configureForAutoLayout()
+        titleName.autoPinEdge(.left, to: .right, of: container, withOffset: 10)
+        titleName.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
+        titleName.autoAlignAxis(toSuperviewAxis: .horizontal)
+                
         container.addSubview(coverPhoto)
-        coverPhoto.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
-        coverPhoto.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
-        coverPhoto.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        coverPhoto.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        coverPhoto.configureForAutoLayout()
+        coverPhoto.autoCenterInSuperview()
+        coverPhoto.autoMatch(.height, to: .height, of: container)
+        coverPhoto.autoMatch(.width, to: .width, of: container)
 
-        
     }
     
     func loadImageFromServer(comic: Comic?, imageView: UIImageView) {

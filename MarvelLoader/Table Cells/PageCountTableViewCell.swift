@@ -34,12 +34,13 @@ class PageCountTableViewCell: UITableViewCell {
     
     func displayLayout(){
         contentView.addSubview(desc)
-        desc.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        desc.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-        desc.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+
+        desc.configureForAutoLayout()
+        desc.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        desc.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        desc.autoAlignAxis(toSuperviewAxis: .horizontal)
         
         contentView.bottomAnchor.constraint(equalTo: desc.bottomAnchor, constant: 7).isActive = true
-        
     }
 
     func setComicDetails(comic: Comic){

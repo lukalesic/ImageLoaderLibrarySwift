@@ -11,7 +11,7 @@ import Dispatch
 
 
 private enum ImageStatus {
-    case inProgress(Task<Any, Error>)
+    case inProgress(Task<UIImage, Error>)
     case failure(Error)
 }
 
@@ -40,12 +40,12 @@ actor Loader{
         return queue
     }()
     
-    public func loadImage(url: URL) async throws -> Any {
+    public func loadImage(url: URL) async throws -> UIImage {
         let request = URLRequest(url: url)
         return try await loadImage(request)
     }
     
-    public func loadImage(_ request: URLRequest) async throws -> Any {
+    public func loadImage(_ request: URLRequest) async throws -> UIImage {
         switch images[request] {
             
         case .inProgress(let task):
@@ -55,7 +55,7 @@ actor Loader{
             throw error
             
         case nil:
-            let task: Task<Any, Error> = Task {
+            let task: Task<UIImage, Error> = Task {
         
                 try await withCheckedThrowingContinuation { continuation in
                     let operation = ImageRequestOperation(session: session, request: request, cache: CustomCacheManager.shared) { [weak self] result in

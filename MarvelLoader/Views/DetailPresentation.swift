@@ -14,7 +14,7 @@ class DetailPresentation: NSObject{
     
     var tableView: UITableView = {
         let table = UITableView()
-        table.translatesAutoresizingMaskIntoConstraints = false
+     //   table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .systemBackground
         return table
     }()
@@ -24,11 +24,14 @@ class DetailPresentation: NSObject{
         
         controller.view.addSubview(tableView)
         
-        tableView.leadingAnchor.constraint(equalTo: controller.view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: controller.view.trailingAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: controller.view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor).isActive = true
-
+        tableView.configureForAutoLayout()
+        tableView.autoPinEdge(toSuperviewEdge: .left)
+        tableView.autoPinEdge(toSuperviewEdge: .right)
+        tableView.autoPinEdge(toSuperviewEdge: .top, withInset: 20.0)
+        tableView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20.0)
+        
+        
+        
         tableView.register(NameTableViewCell.self, forCellReuseIdentifier: "NameCell")
         tableView.register(BioTableViewCell.self, forCellReuseIdentifier: "BioCell")
         tableView.register(IssueNumberTableViewCell.self, forCellReuseIdentifier: "MoreInfoCell")
@@ -58,14 +61,14 @@ class DetailPresentation: NSObject{
         headerView.addSubview(headerTitle)
         headerView.addSubview(infoImageView)
         
-        headerTitle.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 40).isActive = true
-        headerTitle.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -10).isActive = true
-        headerTitle.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8).isActive = true
-        
-        infoImageView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10).isActive = true
-        infoImageView.trailingAnchor.constraint(equalTo: headerTitle.leadingAnchor, constant: -10).isActive = true
-        infoImageView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -10).isActive = true
-        
+        infoImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        infoImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        infoImageView.autoSetDimension(.width, toSize: 20)
+
+        headerTitle.autoPinEdge(.left, to: .right, of: infoImageView, withOffset: 8)
+        headerTitle.autoPinEdge(toSuperviewEdge: .right)
+        headerTitle.autoPinEdge(toSuperviewEdge: .bottom, withInset: 8)
+
         return headerView
     }
     

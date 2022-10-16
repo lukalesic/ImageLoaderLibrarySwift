@@ -13,22 +13,10 @@ class IssueNumberTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = label.font.withSize(15)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Placeholder more info text"
         
         return label
-    }()
-    
-    var pageCount: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = label.font.withSize(15)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Placeholder page count text"
-        
-        return label
-    }()
-    
+    }()    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,10 +32,11 @@ class IssueNumberTableViewCell: UITableViewCell {
     
     func displayLayout(){
         contentView.addSubview(issueNumber)
-        issueNumber.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        issueNumber.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-        issueNumber.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         
+        issueNumber.configureForAutoLayout()
+        issueNumber.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        issueNumber.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        issueNumber.autoAlignAxis(toSuperviewAxis: .horizontal)
         contentView.bottomAnchor.constraint(equalTo: issueNumber.bottomAnchor, constant: 7).isActive = true
         
     }

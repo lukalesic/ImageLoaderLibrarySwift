@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PureLayout
 
 class BioTableViewCell: UITableViewCell {
 
@@ -13,7 +14,6 @@ class BioTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = label.font.withSize(15)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Placeholder bio text"
         
         return label
@@ -33,10 +33,11 @@ class BioTableViewCell: UITableViewCell {
     
     private func displayLayout(){
         contentView.addSubview(bio)
-        bio.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        bio.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-        bio.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         
+        bio.configureForAutoLayout()
+        bio.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        bio.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        bio.autoAlignAxis(toSuperviewAxis: .horizontal)
         contentView.bottomAnchor.constraint(equalTo: bio.bottomAnchor, constant: 7).isActive = true
         
     }

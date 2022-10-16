@@ -15,15 +15,14 @@ class ImageRequestOperation: AsynchronousOperation {
     var session: URLSession
     var request: URLRequest
     var cache: CustomCacheManager
-    let completionHandler: (Result<Any, Error>) -> Void
-    var comicDataSource: ComicBookBaseData?
+    let completionHandler: (Result<UIImage, Error>) -> Void
     
     private static func key(from request: URLRequest) -> String {
         let key = request.url?.absoluteString
         return key!.MD5
     }
     
-    init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<Any, Error>) -> Void) {
+    init(session: URLSession, request: URLRequest, cache: CustomCacheManager, completionHandler: @escaping (Result<UIImage, Error>) -> Void) {
         self.session = session
         self.request = request
         self.cache = cache
@@ -71,9 +70,8 @@ class ImageRequestOperation: AsynchronousOperation {
                 }
             }
             self.task.resume()
-            return
-            
             self.finish()
+            return
         }
     }
     

@@ -5,7 +5,9 @@
 //  Created by Luka Lešić on 05.10.2022..
 //
 
+
 import UIKit
+import PureLayout
 
 class ComicCell: UITableViewCell, ImageDownloading {
     
@@ -53,7 +55,6 @@ class ComicCell: UITableViewCell, ImageDownloading {
     func configureImageView() {
         comicImageView.layer.cornerRadius = 10
         comicImageView.clipsToBounds = true
-        
     }
     
     func configureTitleLabel(){
@@ -62,20 +63,17 @@ class ComicCell: UITableViewCell, ImageDownloading {
     }
 
     func setImageConstraints(){
-        comicImageView.translatesAutoresizingMaskIntoConstraints = false
-        comicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        comicImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12).isActive = true
-        comicImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-      //  comicImageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        comicImageView.widthAnchor.constraint(equalTo: comicImageView.heightAnchor, multiplier: 4/4).isActive = true
+        comicImageView.configureForAutoLayout()
+        comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
+        comicImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 20.0)
+        comicImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
     
     func setTitleLabelConstraints(){
-        comicTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        comicTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        comicTitleLabel.leadingAnchor.constraint(equalTo: comicImageView.trailingAnchor, constant: 20).isActive = true
-        comicTitleLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        comicTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
+        comicTitleLabel.configureForAutoLayout()
+        comicTitleLabel.autoPinEdge(.left, to: .right, of: comicImageView, withOffset: 10)
+        comicTitleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
+        comicTitleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
     
 }
