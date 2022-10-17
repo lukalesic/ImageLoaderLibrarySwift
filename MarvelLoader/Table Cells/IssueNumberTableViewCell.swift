@@ -34,11 +34,7 @@ class IssueNumberTableViewCell: UITableViewCell {
         contentView.addSubview(issueNumber)
         
         issueNumber.configureForAutoLayout()
-        issueNumber.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
-        issueNumber.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        issueNumber.autoAlignAxis(toSuperviewAxis: .horizontal)
-        issueNumber.autoPinEdge(toSuperviewEdge: .bottom, withInset: 7)
-        
+        issueNumber.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
     }
     
     func setComicDetails(comic: Comic){

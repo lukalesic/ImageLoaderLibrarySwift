@@ -52,6 +52,7 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
         
         container.configureForAutoLayout()
         container.autoSetDimensions(to: CGSize(width: 120, height: 120))
+        
         container.autoPinEdge(toSuperviewEdge: .left, withInset: 20.0)
         container.autoPinEdge(toSuperviewEdge: .top, withInset: 20.0)
         container.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20.0)

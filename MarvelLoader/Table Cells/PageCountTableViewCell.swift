@@ -36,11 +36,8 @@ class PageCountTableViewCell: UITableViewCell {
         contentView.addSubview(pageCount)
 
         pageCount.configureForAutoLayout()
-        pageCount.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
-        pageCount.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        pageCount.autoAlignAxis(toSuperviewAxis: .horizontal)
-        pageCount.autoPinEdge(toSuperviewEdge: .bottom, withInset: 7)
-        
+        pageCount.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
+
     }
 
     func setComicDetails(comic: Comic){
