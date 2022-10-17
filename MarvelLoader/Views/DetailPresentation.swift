@@ -55,9 +55,11 @@ class DetailPresentation: NSObject{
         headerView.addSubview(headerTitle)
         headerView.addSubview(infoImageView)
         
+
         infoImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
         infoImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
         infoImageView.autoSetDimension(.width, toSize: 20)
+
 
         headerTitle.autoPinEdge(.left, to: .right, of: infoImageView, withOffset: 8)
         headerTitle.autoPinEdge(toSuperviewEdge: .right)

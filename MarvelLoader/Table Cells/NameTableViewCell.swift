@@ -49,23 +49,27 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
     private func displayLayout(){
         contentView.addSubview(titleName)
         contentView.addSubview(container)
-        
+        setPhotoConstraints()
+        setTitleConstraints()
+    }
+    
+    private func setPhotoConstraints(){
         container.configureForAutoLayout()
-        
         container.autoSetDimensions(to: CGSize(width: 120, height: 120))
         container.autoPinEdges(toSuperviewMarginsExcludingEdge: .right)
-      
-        titleName.configureForAutoLayout()
-        titleName.autoPinEdge(.left, to: .right, of: container, withOffset: 10)
-        titleName.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
-        titleName.autoAlignAxis(toSuperviewAxis: .horizontal)
-                
+        
         container.addSubview(coverPhoto)
         coverPhoto.configureForAutoLayout()
         coverPhoto.autoCenterInSuperview()
         coverPhoto.autoMatch(.height, to: .height, of: container)
         coverPhoto.autoMatch(.width, to: .width, of: container)
-
+    }
+    
+    private func setTitleConstraints(){
+        titleName.configureForAutoLayout()
+        titleName.autoPinEdge(.left, to: .right, of: container, withOffset: 10)
+        titleName.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
+        titleName.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
     
     func loadImageFromServer(comic: Comic?, imageView: UIImageView) {

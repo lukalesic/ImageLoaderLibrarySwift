@@ -32,7 +32,10 @@ class IssueNumberTableViewCell: UITableViewCell {
     
     func displayLayout(){
         contentView.addSubview(issueNumber)
-        
+        setIssueNumberConstraints()
+    }
+    
+    private func setIssueNumberConstraints(){
         issueNumber.configureForAutoLayout()
         issueNumber.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
     }

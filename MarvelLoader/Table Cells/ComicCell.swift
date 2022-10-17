@@ -17,17 +17,21 @@ class ComicCell: UITableViewCell, ImageDownloading {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(comicImageView)
-        addSubview(comicTitleLabel)
-        
-        configureImageView()
-        configureTitleLabel()
-        setImageConstraints()
-        setTitleLabelConstraints()
+        displayLayout()
+    
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func displayLayout(){
+        addSubview(comicImageView)
+        addSubview(comicTitleLabel)
+        configureImageView()
+        configureTitleLabel()
+        setImageConstraints()
+        setTitleLabelConstraints()
     }
     
     func loadImageFromServer(comic: Comic?, imageView: UIImageView){
@@ -65,8 +69,7 @@ class ComicCell: UITableViewCell, ImageDownloading {
     func setImageConstraints(){
         comicImageView.configureForAutoLayout()
         comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
-        comicImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 20.0)
-        comicImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        comicImageView.autoPinEdges(toSuperviewMarginsExcludingEdge: .right)
     }
     
     func setTitleLabelConstraints(){
