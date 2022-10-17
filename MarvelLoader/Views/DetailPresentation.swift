@@ -14,7 +14,6 @@ class DetailPresentation: NSObject{
     
     var tableView: UITableView = {
         let table = UITableView()
-     //   table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .systemBackground
         return table
     }()
@@ -25,12 +24,7 @@ class DetailPresentation: NSObject{
         controller.view.addSubview(tableView)
         
         tableView.configureForAutoLayout()
-        tableView.autoPinEdge(toSuperviewEdge: .left)
-        tableView.autoPinEdge(toSuperviewEdge: .right)
-        tableView.autoPinEdge(toSuperviewEdge: .top, withInset: 10.0)
-        tableView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20.0)
-        
-        
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero)
         
         tableView.register(NameTableViewCell.self, forCellReuseIdentifier: "NameCell")
         tableView.register(BioTableViewCell.self, forCellReuseIdentifier: "BioCell")
