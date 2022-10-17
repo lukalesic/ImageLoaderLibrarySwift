@@ -37,7 +37,7 @@ class IssueNumberTableViewCell: UITableViewCell {
         issueNumber.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
         issueNumber.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
         issueNumber.autoAlignAxis(toSuperviewAxis: .horizontal)
-        contentView.bottomAnchor.constraint(equalTo: issueNumber.bottomAnchor, constant: 7).isActive = true
+        issueNumber.autoPinEdge(toSuperviewEdge: .bottom, withInset: 7)
         
     }
     

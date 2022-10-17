@@ -9,7 +9,7 @@ import UIKit
 
 class PageCountTableViewCell: UITableViewCell {
     
-    var desc: UILabel = {
+    var pageCount: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = label.font.withSize(15)
@@ -33,18 +33,18 @@ class PageCountTableViewCell: UITableViewCell {
     }
     
     func displayLayout(){
-        contentView.addSubview(desc)
+        contentView.addSubview(pageCount)
 
-        desc.configureForAutoLayout()
-        desc.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
-        desc.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        desc.autoAlignAxis(toSuperviewAxis: .horizontal)
+        pageCount.configureForAutoLayout()
+        pageCount.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        pageCount.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        pageCount.autoAlignAxis(toSuperviewAxis: .horizontal)
+        pageCount.autoPinEdge(toSuperviewEdge: .bottom, withInset: 7)
         
-        contentView.bottomAnchor.constraint(equalTo: desc.bottomAnchor, constant: 7).isActive = true
     }
 
     func setComicDetails(comic: Comic){
-        if comic.pageCount == 0 {desc.text = "No page count information available"}
-        else{ desc.text = "\(comic.pageCount!) pages"}
+        if comic.pageCount == 0 {pageCount.text = "No page count information available"}
+        else{ pageCount.text = "\(comic.pageCount!) pages"}
     }
 }

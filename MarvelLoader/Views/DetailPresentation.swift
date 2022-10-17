@@ -27,7 +27,7 @@ class DetailPresentation: NSObject{
         tableView.configureForAutoLayout()
         tableView.autoPinEdge(toSuperviewEdge: .left)
         tableView.autoPinEdge(toSuperviewEdge: .right)
-        tableView.autoPinEdge(toSuperviewEdge: .top, withInset: 20.0)
+        tableView.autoPinEdge(toSuperviewEdge: .top, withInset: 10.0)
         tableView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20.0)
         
         

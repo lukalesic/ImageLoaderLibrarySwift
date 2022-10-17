@@ -34,11 +34,11 @@ class BioTableViewCell: UITableViewCell {
     private func displayLayout(){
         contentView.addSubview(bio)
         
-        bio.configureForAutoLayout()
+        bio.configureForAutoLayout()    
         bio.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
         bio.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
         bio.autoAlignAxis(toSuperviewAxis: .horizontal)
-        contentView.bottomAnchor.constraint(equalTo: bio.bottomAnchor, constant: 7).isActive = true
+        bio.autoPinEdge(toSuperviewEdge: .bottom, withInset: 8)
         
     }
     
