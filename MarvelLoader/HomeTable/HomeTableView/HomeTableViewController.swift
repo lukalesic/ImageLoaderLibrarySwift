@@ -105,7 +105,6 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let comic = comicBook?.data?.comicbooks?[indexPath.row]
         let detailView = DetailViewController()

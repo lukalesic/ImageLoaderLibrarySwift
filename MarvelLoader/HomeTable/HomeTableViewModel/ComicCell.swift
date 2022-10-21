@@ -64,7 +64,6 @@ class ComicCell: UITableViewCell, ImageDownloading {
     
     func configureTitleLabel(){
         comicTitleLabel.numberOfLines = 0
-      //  comicTitleLabel.adjustsFontSizeToFitWidth = true
     }
 
     func setImageConstraints(){

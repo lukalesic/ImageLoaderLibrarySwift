@@ -10,31 +10,13 @@ import PureLayout
 
 class NameTableViewCell: UITableViewCell, ImageDownloading {
     let loader = Loader()
+    var NameTableViewModel = NameTableCellViewModel()
+    
+    var titleName = UILabel()
+    var container = UIView()
+    var coverPhoto = UIImageView()
+    
 
-    var titleName: UILabel = {
-        let name = UILabel()
-        name.numberOfLines = 0
-        name.text = "Placeholder text"
-        name.font = name.font.withSize(23)
-
-        return name
-    }()
-    
-    var container: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 12
-        view.backgroundColor = .systemMint
-        view.clipsToBounds = true
-        return view
-    }()
-    
-    var coverPhoto: UIImageView = {
-        let image = UIImageView()
-        image.backgroundColor = .systemBlue
-      //  image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .clear
@@ -47,39 +29,22 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
     }
     
     private func displayLayout(){
+        titleName = NameTableViewModel.setupTitle(titleName)
+        container = NameTableViewModel.setupContainer(container)
+        coverPhoto = NameTableViewModel.setupCoverPhoto(coverPhoto)
+        
         contentView.addSubview(titleName)
         contentView.addSubview(container)
-        setPhotoConstraints()
-        setTitleConstraints()
-    }
-    
-    private func setPhotoConstraints(){
-        container.configureForAutoLayout()
-        container.autoSetDimensions(to: CGSize(width: 120, height: 120))
-        container.autoPinEdges(toSuperviewMarginsExcludingEdge: .right)
         
-        container.addSubview(coverPhoto)
-        coverPhoto.configureForAutoLayout()
-        coverPhoto.autoMatch(.height, to: .height, of: container)
-        coverPhoto.autoMatch(.width, to: .width, of: container)
+        NameTableViewModel.setPhotoConstraints(container: container, coverPhoto: coverPhoto)
+        NameTableViewModel.setTitleConstraints(container: container, titleName: titleName)
     }
-    
-    private func setTitleConstraints(){
-        titleName.configureForAutoLayout()
-        titleName.autoPinEdge(.left, to: .right, of: container, withOffset: 10)
-        titleName.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
-        titleName.autoAlignAxis(toSuperviewAxis: .horizontal)
-    }
-    
     
     func loadImageFromServer(comic: Comic?, imageView: UIImageView) {
-        guard let path = comic?.thumbnail?.path, let ext = comic?.thumbnail?.ext else {return}
-        let imagePath = path + "." + ext
-        let imageURL = URL(string: imagePath)!
-        
         Task {
             do{
-               let downloadedImage = try await loader.loadImage(url: imageURL)
+                let url = NameTableViewModel.generateURL(comic: comic)!
+                let downloadedImage = try await loader.loadImage(url: url)
                 imageView.image = downloadedImage as! UIImage
             }
             catch{
@@ -87,9 +52,9 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
             }
         }
     }
-    
 
     func setComicData(comic: Comic?){
+        // ovo prvo u viewmodel def, izbaciti  ikakvu comic funckionalnost
         titleName.text = comic?.title
         loadImageFromServer(comic: comic, imageView: coverPhoto)
     }

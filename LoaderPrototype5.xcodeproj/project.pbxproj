@@ -40,6 +40,8 @@
 		DFF6EC0F28F4257B0098AE0C /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3C456A28D2A4E0002875D3 /* LoaderView.swift */; };
 		DFF6EC1328F435550098AE0C /* Posters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6EC1028F4306B0098AE0C /* Posters.swift */; };
 		DFFB199729029BDF00E3238C /* NameTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFB199629029BDF00E3238C /* NameTableCellViewModel.swift */; };
+		DFFB19992902D13900E3238C /* IssueNumberCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFB19982902D13900E3238C /* IssueNumberCellViewModel.swift */; };
+		DFFB199B2902DA2200E3238C /* BioCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFB199A2902DA2200E3238C /* BioCellViewModel.swift */; };
 		DFFBAE1728FFEEC500AA73A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFBAE1628FFEEC500AA73A8 /* AppDelegate.swift */; };
 		DFFBAE1928FFEEC500AA73A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFBAE1828FFEEC500AA73A8 /* SceneDelegate.swift */; };
 		DFFBAE1B28FFEEC500AA73A8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFBAE1A28FFEEC500AA73A8 /* ViewController.swift */; };
@@ -125,6 +127,8 @@
 		DFF6EC0D28EF0C320098AE0C /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		DFF6EC1028F4306B0098AE0C /* Posters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posters.swift; sourceTree = "<group>"; };
 		DFFB199629029BDF00E3238C /* NameTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTableCellViewModel.swift; sourceTree = "<group>"; };
+		DFFB19982902D13900E3238C /* IssueNumberCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueNumberCellViewModel.swift; sourceTree = "<group>"; };
+		DFFB199A2902DA2200E3238C /* BioCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioCellViewModel.swift; sourceTree = "<group>"; };
 		DFFBAE1428FFEEC500AA73A8 /* MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFFBAE1628FFEEC500AA73A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFFBAE1828FFEEC500AA73A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -359,7 +363,6 @@
 		DFFBAE512901476A00AA73A8 /* HomeTable */ = {
 			isa = PBXGroup;
 			children = (
-				DF90287228ED845B007EDB01 /* ComicCell.swift */,
 				DFFBAE54290147A600AA73A8 /* HomeTableView */,
 				DFFBAE532901478500AA73A8 /* HomeTableViewModel */,
 			);
@@ -380,6 +383,7 @@
 		DFFBAE532901478500AA73A8 /* HomeTableViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DF90287228ED845B007EDB01 /* ComicCell.swift */,
 				DFFBAE572901603F00AA73A8 /* HomeTableViewModel.swift */,
 			);
 			path = HomeTableViewModel;
@@ -410,6 +414,8 @@
 			children = (
 				DFFBAE592901606200AA73A8 /* DetailViewModel.swift */,
 				DFFB199629029BDF00E3238C /* NameTableCellViewModel.swift */,
+				DFFB19982902D13900E3238C /* IssueNumberCellViewModel.swift */,
+				DFFB199A2902DA2200E3238C /* BioCellViewModel.swift */,
 			);
 			path = DetailScreenViewModel;
 			sourceTree = "<group>";
@@ -698,10 +704,12 @@
 				DF90283328EC2E6A007EDB01 /* AppDelegate.swift in Sources */,
 				DFFBAE5A2901606200AA73A8 /* DetailViewModel.swift in Sources */,
 				DFC22C4F28F630B8000B9444 /* NameTableViewCell.swift in Sources */,
+				DFFB19992902D13900E3238C /* IssueNumberCellViewModel.swift in Sources */,
 				DFFBAE582901603F00AA73A8 /* HomeTableViewModel.swift in Sources */,
 				DF90283528EC2E6A007EDB01 /* SceneDelegate.swift in Sources */,
 				DFFB199729029BDF00E3238C /* NameTableCellViewModel.swift in Sources */,
 				DF9A1D4528F957D10004A940 /* Protocols.swift in Sources */,
+				DFFB199B2902DA2200E3238C /* BioCellViewModel.swift in Sources */,
 				DFFBAE502901473600AA73A8 /* Thumbnail.swift in Sources */,
 				DF90287928EDB1C7007EDB01 /* EnvironmentValues.swift in Sources */,
 				DF90287B28EDB331007EDB01 /* ImageRequestOperation.swift in Sources */,

@@ -10,5 +10,7 @@ import Foundation
 class DetailViewModel {
     
     var bindDetailViewModelToController : (() -> ()) = {}
-
+    
+  
+    
 }

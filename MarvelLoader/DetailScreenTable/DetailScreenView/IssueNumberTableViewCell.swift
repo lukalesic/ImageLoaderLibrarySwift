@@ -9,14 +9,9 @@ import UIKit
 
 class IssueNumberTableViewCell: UITableViewCell {
     
-    var issueNumber: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = label.font.withSize(15)
-        label.text = "Placeholder more info text"
-        
-        return label
-    }()    
+    var IssueNumberViewModel = IssueNumberCellViewModel()
+    
+    var issueNumber = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,14 +27,11 @@ class IssueNumberTableViewCell: UITableViewCell {
     
     func displayLayout(){
         contentView.addSubview(issueNumber)
-        setIssueNumberConstraints()
+        issueNumber = IssueNumberViewModel.setupIssueNumber(issueNumber)
+        IssueNumberViewModel.setIssueNumberConstraints(issueNumber: issueNumber)
     }
     
-    private func setIssueNumberConstraints(){
-        issueNumber.configureForAutoLayout()
-        issueNumber.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
-    }
-    
+
     func setComicDetails(comic: Comic){
         if comic.issueNumber == 0 {issueNumber.text = "No issue number available"}
         else {  issueNumber.text = "Issue number: \(comic.issueNumber!)"
