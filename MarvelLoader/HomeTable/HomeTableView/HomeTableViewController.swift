@@ -13,6 +13,8 @@ class HomeTableViewController: UIViewController, JSONParsing {
     var tableView = UITableView()
     var comicBook: ComicBookBaseData?
         
+    private var homeTableViewModel: HomeTableViewModel!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()

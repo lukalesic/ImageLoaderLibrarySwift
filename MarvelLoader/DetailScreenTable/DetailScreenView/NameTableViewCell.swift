@@ -60,7 +60,6 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
         
         container.addSubview(coverPhoto)
         coverPhoto.configureForAutoLayout()
-        coverPhoto.autoCenterInSuperview()
         coverPhoto.autoMatch(.height, to: .height, of: container)
         coverPhoto.autoMatch(.width, to: .width, of: container)
     }
@@ -71,6 +70,7 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
         titleName.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
         titleName.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
+    
     
     func loadImageFromServer(comic: Comic?, imageView: UIImageView) {
         guard let path = comic?.thumbnail?.path, let ext = comic?.thumbnail?.ext else {return}

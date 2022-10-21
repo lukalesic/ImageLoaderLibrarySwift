@@ -12,6 +12,8 @@ class DetailViewController: UIViewController {
     var presentation = DetailPresentation()
     var comicDetail: Comic?
     
+    var detailViewModel: DetailViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground

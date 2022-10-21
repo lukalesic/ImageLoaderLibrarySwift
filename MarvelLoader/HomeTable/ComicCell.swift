@@ -34,6 +34,7 @@ class ComicCell: UITableViewCell, ImageDownloading {
         setTitleLabelConstraints()
     }
     
+    
     func loadImageFromServer(comic: Comic?, imageView: UIImageView){
         guard let path = comic?.thumbnail?.path, let ext = comic?.thumbnail?.ext else {return}
         let imagePath = path + "." + ext
@@ -63,12 +64,12 @@ class ComicCell: UITableViewCell, ImageDownloading {
     
     func configureTitleLabel(){
         comicTitleLabel.numberOfLines = 0
-        comicTitleLabel.adjustsFontSizeToFitWidth = true
+      //  comicTitleLabel.adjustsFontSizeToFitWidth = true
     }
 
     func setImageConstraints(){
         comicImageView.configureForAutoLayout()
-        comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
+        comicImageView.autoSetDimension(.width, toSize: 80)
         comicImageView.autoPinEdges(toSuperviewMarginsExcludingEdge: .right)
     }
     
