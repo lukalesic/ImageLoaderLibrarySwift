@@ -45,7 +45,7 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
             do{
                 let url = NameTableViewModel.generateURL(comic: comic)!
                 let downloadedImage = try await loader.loadImage(url: url)
-                imageView.image = downloadedImage as! UIImage
+                imageView.image = downloadedImage 
             }
             catch{
                 print("error")
