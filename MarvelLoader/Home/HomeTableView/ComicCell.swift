@@ -5,7 +5,6 @@
 //  Created by Luka Lešić on 05.10.2022..
 //
 
-
 import UIKit
 import PureLayout
 import Combine
@@ -45,7 +44,6 @@ class ComicCell: UITableViewCell {
             do{
                 let downloadedImage = try await loader.loadImage(url: url)
                 self.comicImageView.image = downloadedImage
-                
             }
             catch{
                 print("")
@@ -54,10 +52,13 @@ class ComicCell: UITableViewCell {
     }
     
     func bind(){
-        comicCellViewModel.$comicTitleLabel.sink { [weak self] result in
-            self?.titleLabel.text = result
+        comicCellViewModel.$comicTitleLabel
+            .sink { [weak self] title in
+                self?.titleLabel.text = title
+                
         }.store(in: &cancellables)
     }
+    
     
     func setTitle(title: String?){
         titleLabel.text = title

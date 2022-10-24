@@ -70,7 +70,7 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
 
         cell.loadImageFromServer(url: url)
         comicCellVM.setTitle(comic: comic)
-      
+        
         
        // let title = comicCellVM.generateTitle(comic: comic)!
        // cell.setTitle(title: title)
