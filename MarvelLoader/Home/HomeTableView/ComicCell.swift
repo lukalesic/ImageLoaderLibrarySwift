@@ -11,33 +11,31 @@ import Combine
 
 class ComicCell: UITableViewCell {
     
-    var comicCellViewModel = ComicCellViewModel()
+    private var comicImageView = UIImageView()
+    private var titleLabel = UILabel()
     let loader = Loader()
     
-    private var cancellables: Set<AnyCancellable> = []
-    
-    var comicImageView = UIImageView()
-    var titleLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        displayLayout()
-        bind()
+        addSubview(comicImageView)
+        addSubview(titleLabel)
+        
+        configureImageView()
+        configureTitleLabel()
+        setImageConstraints()
+        setTitleLabelConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func displayLayout(){
-        addSubview(comicImageView)
-        addSubview(titleLabel)
-        comicCellViewModel.configureImageView(comicImageView: comicImageView)
-        comicCellViewModel.configureTitleLabel(comicTitleLabel: titleLabel)
-        comicCellViewModel.setImageConstraints(comicImageView: comicImageView)
-        comicCellViewModel.setTitleLabelConstraints(comicTitleLabel: titleLabel, comicImageView: comicImageView)
-        
+    func updateWith(viewModel: ComicCellViewModel) {
+        loadImageFromServer(url: viewModel.photoURL!)
+        titleLabel.text = viewModel.title
     }
+    
     
     func loadImageFromServer(url: URL) {
         Task {
@@ -51,19 +49,30 @@ class ComicCell: UITableViewCell {
         }
     }
     
-    func bind(){
-        comicCellViewModel.$comicTitleLabel
-            .sink { [weak self] title in
-                self?.titleLabel.text = title
-                
-        }.store(in: &cancellables)
+    func configureImageView() {
+        comicImageView.layer.cornerRadius = 10
+        comicImageView.clipsToBounds = true
     }
     
-    
-    func setTitle(title: String?){
-        titleLabel.text = title
+    func configureTitleLabel(){
+        titleLabel.numberOfLines = 0
+        titleLabel.adjustsFontSizeToFitWidth = true
     }
-        
+    
+    func setImageConstraints(){
+        comicImageView.configureForAutoLayout()
+        comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
+        comicImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 20.0)
+        comicImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+    }
+    
+    func setTitleLabelConstraints(){
+        titleLabel.configureForAutoLayout()
+        titleLabel.autoPinEdge(.left, to: .right, of: comicImageView, withOffset: 10)
+        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
+        titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
+    }
 }
+
 
 

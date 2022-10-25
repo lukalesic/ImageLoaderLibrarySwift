@@ -7,10 +7,10 @@
 
 import UIKit
 
-class HomeTableViewController: UIViewController, ViewModelDelegate {
+class ComicTableViewController: UIViewController, ViewModelDelegate {
     
     var tableView = UITableView()
-    private var homeTableViewModel = HomeTableViewModel()
+    private var comicsViewModel = ComicsViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,13 +20,13 @@ class HomeTableViewController: UIViewController, ViewModelDelegate {
 
         Task{
             do {
-                try await homeTableViewModel.loadData()
+                try await comicsViewModel.loadData()
                 reloadTable()
             }
             catch{ print("error") }
         }
         configureTableView()
-        tableView.reloadData()
+        reloadTable()
     }
     
     func reloadTable() {
@@ -43,7 +43,7 @@ class HomeTableViewController: UIViewController, ViewModelDelegate {
     }
     
     func setTableViewDelegates(){
-        homeTableViewModel.delegate = self
+        comicsViewModel.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -55,30 +55,23 @@ class HomeTableViewController: UIViewController, ViewModelDelegate {
 }
  
 
-extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
+extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return homeTableViewModel.comic?.data?.comicbooks?.count ?? 10
+        return comicsViewModel.comics?.data?.comicbooks?.count ?? 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let comic = homeTableViewModel.comic?.data?.comicbooks?[indexPath.row]
-        var comicCellVM = ComicCellViewModel()
-        
-        let url = comicCellVM.generateURL(comic: comic)!
         let cell = tableView.dequeueReusableCell(withIdentifier: Cells.comicCell) as! ComicCell
-
-        cell.loadImageFromServer(url: url)
-        comicCellVM.setTitle(comic: comic)
-        
-        
-       // let title = comicCellVM.generateTitle(comic: comic)!
-       // cell.setTitle(title: title)
+         
+        let cellViewModel = self.comicsViewModel.cellViewModel(at: indexPath)
+        cell.updateWith(viewModel: cellViewModel)
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let comic = homeTableViewModel.comic?.data?.comicbooks?[indexPath.row]
+        let comic = comicsViewModel.comics?.data?.comicbooks?[indexPath.row]
         let detailView = DetailViewController()
         detailView.comicDetail = comic
         navigationController?.pushViewController(detailView, animated: true)

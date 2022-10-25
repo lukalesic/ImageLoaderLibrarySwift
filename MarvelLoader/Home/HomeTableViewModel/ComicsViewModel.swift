@@ -11,12 +11,16 @@ protocol ViewModelDelegate: AnyObject {
     func reloadTable()
 }
 
-class HomeTableViewModel {
-    
-    var comic: ComicBookBaseData?
+class ComicsViewModel {
+   
+    var comics: ComicBookBaseData?
     weak var delegate: ViewModelDelegate?
-
-    @Published var comicBook: ComicBookBaseData?
+    
+    func cellViewModel(at indexPath: IndexPath) -> ComicCellViewModel {
+      let comic = comics?.data?.comicbooks![indexPath.row]
+      let viewModel = ComicCellViewModel(comic: comic)
+      return viewModel
+    }
 
     func loadData() async  {
         let request = URL(string: generatedURL)!
@@ -25,7 +29,7 @@ class HomeTableViewModel {
             try await downloadObject(url: request, completionHandler: { result in
                 switch result {
                 case .success(let result):
-                    self.comic =  result as ComicBookBaseData
+                    self.comics = result as ComicBookBaseData
                     self.delegate?.reloadTable()
                 case .failure(let error):
                     print(error)
@@ -55,7 +59,6 @@ class HomeTableViewModel {
         }
         task.resume()
     }
-
 }
-    
+
 
