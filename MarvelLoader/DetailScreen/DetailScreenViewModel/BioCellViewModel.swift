@@ -8,8 +8,14 @@
 import Foundation
 import UIKit
 
-class BioCellViewModel {
+struct BioCellViewModel {
     
+    var comicDescription: String?
+
+    init(comic: Comic){
+        if comic.description == "" {comicDescription = "No description available for this particular comic."}
+        else {comicDescription = comic.description}
+    }
     
-  
+
 }

@@ -9,8 +9,6 @@ import UIKit
 import PureLayout
 
 class BioTableViewCell: UITableViewCell {
-    
-    var BioViewModel = BioCellViewModel()
 
     var comicDescription: UILabel = {
             let label = UILabel()
@@ -34,6 +32,10 @@ class BioTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateWith(viewModel: BioCellViewModel) {
+        comicDescription.text = viewModel.comicDescription
+    }
+    
     private func displayLayout(){
         contentView.addSubview(comicDescription)
         setDescriptionConstraints()
@@ -43,11 +45,5 @@ class BioTableViewCell: UITableViewCell {
         comicDescription.configureForAutoLayout()
         comicDescription.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
     }
-    
-    func setComicData(comic: Comic){
-        if comic.description == "" {comicDescription.text = "No description available for this particular comic."}
-        else {comicDescription.text = comic.description}
-    }
-    
   
 }

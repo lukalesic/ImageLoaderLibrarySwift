@@ -8,9 +8,13 @@
 import Foundation
 import UIKit
 
-class IssueNumberCellViewModel {
+struct IssueNumberCellViewModel {
     
-    
-    
-    
+    var issueNumber: String?
+
+    init(comic: Comic){
+        if comic.issueNumber == 0 {issueNumber = "No issue number available"}
+        else {  issueNumber = "Issue number: \(comic.issueNumber!)"
+        }
+    }
 }

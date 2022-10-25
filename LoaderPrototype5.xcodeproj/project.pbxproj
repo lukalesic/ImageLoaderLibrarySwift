@@ -255,7 +255,6 @@
 		DFFBAE522901477800AA73A8 /* DetailScreen */ = {
 			isa = PBXGroup;
 			children = (
-				DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */,
 				DFFBAE56290147B800AA73A8 /* DetailScreenViewModel */,
 				DFFBAE55290147B000AA73A8 /* DetailScreenView */,
 			);
@@ -300,6 +299,7 @@
 				DFFB199A2902DA2200E3238C /* BioCellViewModel.swift */,
 				DFFB199C2905659000E3238C /* PageCountCellViewModel.swift */,
 				DFFBAE592901606200AA73A8 /* DetailViewModel.swift */,
+				DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */,
 			);
 			path = DetailScreenViewModel;
 			sourceTree = "<group>";

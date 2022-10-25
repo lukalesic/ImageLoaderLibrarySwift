@@ -8,9 +8,7 @@
 import UIKit
 
 class IssueNumberTableViewCell: UITableViewCell {
-    
-    var IssueNumberViewModel = IssueNumberCellViewModel()
-    
+        
     var issueNumber: UILabel = {
             let label = UILabel()
             label.numberOfLines = 0
@@ -30,6 +28,10 @@ class IssueNumberTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateWith(viewModel: IssueNumberCellViewModel) {
+        issueNumber.text = viewModel.issueNumber
+    }
+    
     func displayLayout(){
         contentView.addSubview(issueNumber)
         setIssueNumberConstraints()
@@ -40,10 +42,5 @@ class IssueNumberTableViewCell: UITableViewCell {
        issueNumber.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
    }
 
-    func setComicDetails(comic: Comic){
-        if comic.issueNumber == 0 {issueNumber.text = "No issue number available"}
-        else {  issueNumber.text = "Issue number: \(comic.issueNumber!)"
-        }
-        
-    }
+
 }

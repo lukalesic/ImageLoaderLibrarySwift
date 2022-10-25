@@ -8,9 +8,13 @@
 import Foundation
 import UIKit
 
-class PageCountViewModel {
-
+struct PageCountViewModel {
     
-
+    var pageCount: String?
+    
+    init(comic: Comic){
+        if comic.pageCount == 0 {pageCount = "No page count information available"}
+        else{ pageCount = "\(comic.pageCount!) pages"}
+    }
     
 }

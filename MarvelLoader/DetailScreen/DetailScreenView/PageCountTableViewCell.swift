@@ -9,8 +9,6 @@ import UIKit
 
 class PageCountTableViewCell: UITableViewCell {
 
-    var pageCountViewModel = PageCountViewModel()
-
     var pageCount: UILabel = {
           let label = UILabel()
           label.numberOfLines = 0
@@ -34,6 +32,10 @@ class PageCountTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateWith(viewModel: PageCountViewModel) {
+        pageCount.text = viewModel.pageCount
+    }
+    
     func displayLayout(){
         contentView.addSubview(pageCount)
         setPageCountConstraints()
@@ -44,8 +46,4 @@ class PageCountTableViewCell: UITableViewCell {
         pageCount.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
     }
 
-    func setComicDetails(comic: Comic){
-        if comic.pageCount == 0 {pageCount.text = "No page count information available"}
-        else{ pageCount.text = "\(comic.pageCount!) pages"}
-    }
 }

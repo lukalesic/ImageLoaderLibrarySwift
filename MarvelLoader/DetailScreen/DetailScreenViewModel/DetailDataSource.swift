@@ -24,35 +24,30 @@ class DetailDataSource: NSObject, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NameCell", for: indexPath) as! NameTableViewCell
-           
-           let nameViewModel = NameTableCellViewModel(comic: comic)
-           cell.updateWith(viewModel: nameViewModel)
+            let nameCellViewModel = viewModel.nameTableCellViewModel(comic: comic)
+            cell.updateWith(viewModel: nameCellViewModel)
 
-            
-         //  let cellViewModel = self.viewModel.nameTableCellViewModel(at: indexPath)
-         //   cell.updateWith(viewModel: cellViewModel)
-
-            //  cell.updateWith(viewModel: viewModel)
-
-            
-            
-            
             return cell
             
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BioCell", for: indexPath) as! BioTableViewCell
-            cell.setComicData(comic: comic!)
+            let bioCellViewModel = viewModel.bioCellViewModel(comic: comic)
+            cell.updateWith(viewModel: bioCellViewModel)
             
             return cell
         }
         else if indexPath.section == 2{
             let cell = tableView.dequeueReusableCell(withIdentifier: "MoreInfoCell", for: indexPath) as! IssueNumberTableViewCell
-            cell.setComicDetails(comic: comic!)
+            let issueNumberViewModel = viewModel.issueNumberCellViewModel(comic: comic!)
+            cell.updateWith(viewModel: issueNumberViewModel)
+            
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PageCountCell", for: indexPath) as! PageCountTableViewCell
-            cell.setComicDetails(comic: comic!)
+            let pageCountViewModel = viewModel.pageCountViewModel(comic: comic!)
+            cell.updateWith(viewModel: pageCountViewModel)
+
             return cell
         }
     } 
