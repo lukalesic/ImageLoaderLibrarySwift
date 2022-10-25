@@ -20,8 +20,9 @@ class DetailViewController: UIViewController {
     
     var dataSource = DetailDataSource()
 
-    var detailViewModel: DetailViewModel!
-
+    var detailViewModel = DetailViewModel()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -30,6 +31,7 @@ class DetailViewController: UIViewController {
         title = "Details"
         setup()
     }
+        
     
     private func setup(){
         displayLayout()

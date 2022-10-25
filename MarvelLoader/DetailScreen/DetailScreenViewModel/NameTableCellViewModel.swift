@@ -8,16 +8,13 @@
 import Foundation
 import UIKit
 
-class NameTableCellViewModel {
+struct NameTableCellViewModel {
     
-    @Published var photoURL: URL?
-    @Published var comics: Comic?
+     var photoURL: URL?
+     var title: String?
     
-    
-    func generateURL(comic: Comic?) -> URL? {
-       guard let path = comic?.thumbnail?.path, let ext = comic?.thumbnail?.ext else {return nil}
-       let imagePath = path + "." + ext
-       photoURL = URL(string: imagePath)!
-       return photoURL
-    }    
+    init(comic: Comic?) {
+        photoURL = URL(string: (comic?.thumbnail?.path ?? "") + "." + (comic?.thumbnail?.ext ?? ""))
+        self.title = comic?.title
+    }
 }

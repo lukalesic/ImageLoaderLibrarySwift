@@ -7,7 +7,6 @@
 
 import UIKit
 import PureLayout
-import Combine
 
 class ComicCell: UITableViewCell {
     

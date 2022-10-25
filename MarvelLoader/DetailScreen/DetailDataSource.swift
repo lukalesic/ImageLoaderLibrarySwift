@@ -10,6 +10,7 @@ import UIKit
 class DetailDataSource: NSObject, UITableViewDataSource {
     
     var comic: Comic?
+    var viewModel = ComicsViewModel()
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4
@@ -23,8 +24,11 @@ class DetailDataSource: NSObject, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NameCell", for: indexPath) as! NameTableViewCell
-            cell.setComicData(comic: comic)
+            let viewModel = NameTableCellViewModel(comic: comic)
             
+          //  let cellViewModel = self.viewModel.nameTableCellViewModel(at: indexPath)
+            cell.updateWith(viewModel: viewModel)
+           // cell.setComicData(comic: comic!)
             return cell
             
         } else if indexPath.section == 1 {

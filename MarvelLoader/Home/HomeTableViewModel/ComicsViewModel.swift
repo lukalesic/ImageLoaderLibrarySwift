@@ -16,7 +16,7 @@ class ComicsViewModel {
     var comics: ComicBookBaseData?
     weak var delegate: ViewModelDelegate?
     
-    func cellViewModel(at indexPath: IndexPath) -> ComicCellViewModel {
+    func comicCellViewModel(at indexPath: IndexPath) -> ComicCellViewModel {
       let comic = comics?.data?.comicbooks![indexPath.row]
       let viewModel = ComicCellViewModel(comic: comic)
       return viewModel

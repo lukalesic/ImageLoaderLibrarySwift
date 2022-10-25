@@ -64,7 +64,7 @@ extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Cells.comicCell) as! ComicCell
          
-        let cellViewModel = self.comicsViewModel.cellViewModel(at: indexPath)
+        let cellViewModel = self.comicsViewModel.comicCellViewModel(at: indexPath)
         cell.updateWith(viewModel: cellViewModel)
         return cell
         
@@ -73,6 +73,10 @@ extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let comic = comicsViewModel.comics?.data?.comicbooks?[indexPath.row]
         let detailView = DetailViewController()
+        //tu predati u viewModel onaj comic
+        //kao tipa
+        //detailView.viewModel.comic = comic
+        //detailView.detailViewModel.comic = comic
         detailView.comic = comic
         navigationController?.pushViewController(detailView, animated: true)
     }

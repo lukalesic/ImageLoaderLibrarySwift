@@ -8,18 +8,15 @@
 import UIKit
 import PureLayout
 
-class NameTableViewCell: UITableViewCell, ImageDownloading {
+class NameTableViewCell: UITableViewCell {
     let loader = Loader()
-    var NameTableViewModel = NameTableCellViewModel()
     
-    var titleName: UILabel = {
-          let name = UILabel()
-          name.numberOfLines = 0
-          name.text = "Placeholder text"
-          name.font = name.font.withSize(23)
-
-          return name
-      }()
+    var titleLabel = UILabel()
+    
+    func configureTitleLabel(){
+        titleLabel.numberOfLines = 0
+        titleLabel.font = titleLabel.font.withSize(23)
+    }
     
     var container: UIView = {
             let view = UIView()
@@ -48,18 +45,23 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
     
     
     private func displayLayout(){
-        contentView.addSubview(titleName)
+        contentView.addSubview(titleLabel)
         contentView.addSubview(container)
+        configureTitleLabel()
         setPhotoConstraints()
         setTitleConstraints()
     }
     
-    func loadImageFromServer(comic: Comic?, imageView: UIImageView) {
+    func updateWith(viewModel: NameTableCellViewModel) {
+        loadImageFromServer(url: viewModel.photoURL!)
+        titleLabel.text = viewModel.title
+    }
+    
+    func loadImageFromServer(url: URL) {
         Task {
             do{
-                let url = NameTableViewModel.generateURL(comic: comic)!
                 let downloadedImage = try await loader.loadImage(url: url)
-                imageView.image = downloadedImage 
+                self.coverPhoto.image = downloadedImage
             }
             catch{
                 print("error")
@@ -79,15 +81,10 @@ class NameTableViewCell: UITableViewCell, ImageDownloading {
    }
    
     func setTitleConstraints(){
-       titleName.configureForAutoLayout()
-       titleName.autoPinEdge(.left, to: .right, of: container, withOffset: 10)
-       titleName.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
-       titleName.autoAlignAxis(toSuperviewAxis: .horizontal)
+       titleLabel.configureForAutoLayout()
+        titleLabel.autoPinEdge(.left, to: .right, of: container, withOffset: 10)
+        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
+        titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
    }
-    
-    func setComicData(comic: Comic?){
-        titleName.text = comic?.title
-        loadImageFromServer(comic: comic, imageView: coverPhoto)
-    }
     
 }
