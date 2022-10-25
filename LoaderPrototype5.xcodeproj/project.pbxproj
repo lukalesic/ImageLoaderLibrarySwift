@@ -29,7 +29,6 @@
 		DF9A1D4A28F985EF0004A940 /* PureLayout in Frameworks */ = {isa = PBXBuildFile; productRef = DF9A1D4928F985EF0004A940 /* PureLayout */; };
 		DFAAEEFC28D360DD002EDC43 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAEEFB28D360DD002EDC43 /* HomeView.swift */; };
 		DFC22C4928F57AC5000B9444 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4828F57AC5000B9444 /* DetailViewController.swift */; };
-		DFC22C4B28F62CBC000B9444 /* DetailPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */; };
 		DFC22C4D28F62FF5000B9444 /* DetailDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */; };
 		DFC22C4F28F630B8000B9444 /* NameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C4E28F630B8000B9444 /* NameTableViewCell.swift */; };
 		DFC22C5228F6C620000B9444 /* BioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC22C5128F6C620000B9444 /* BioTableViewCell.swift */; };
@@ -85,7 +84,6 @@
 		DF9A1D4428F957D10004A940 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DFAAEEFB28D360DD002EDC43 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DFC22C4828F57AC5000B9444 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresentation.swift; sourceTree = "<group>"; };
 		DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDataSource.swift; sourceTree = "<group>"; };
 		DFC22C4E28F630B8000B9444 /* NameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTableViewCell.swift; sourceTree = "<group>"; };
 		DFC22C5128F6C620000B9444 /* BioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioTableViewCell.swift; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 		DFFBAE522901477800AA73A8 /* DetailScreen */ = {
 			isa = PBXGroup;
 			children = (
-				DFC22C4A28F62CBC000B9444 /* DetailPresentation.swift */,
 				DFC22C4C28F62FF5000B9444 /* DetailDataSource.swift */,
 				DFFBAE56290147B800AA73A8 /* DetailScreenViewModel */,
 				DFFBAE55290147B000AA73A8 /* DetailScreenView */,
@@ -461,7 +458,6 @@
 				DFC22C5428F6D0B6000B9444 /* IssueNumberTableViewCell.swift in Sources */,
 				DFC22C4928F57AC5000B9444 /* DetailViewController.swift in Sources */,
 				DF90286B28ED7ECB007EDB01 /* ComicTableViewController.swift in Sources */,
-				DFC22C4B28F62CBC000B9444 /* DetailPresentation.swift in Sources */,
 				DFC22C4D28F62FF5000B9444 /* DetailDataSource.swift in Sources */,
 				DF90287528ED8DF2007EDB01 /* ComicBookBaseData.swift in Sources */,
 				DFFB199F2905677F00E3238C /* ComicCellViewModel.swift in Sources */,

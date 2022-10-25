@@ -9,7 +9,7 @@ import UIKit
 
 class DetailDataSource: NSObject, UITableViewDataSource {
     
-    var comicDetail: Comic?
+    var comic: Comic?
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4
@@ -23,24 +23,24 @@ class DetailDataSource: NSObject, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NameCell", for: indexPath) as! NameTableViewCell
-            cell.setComicData(comic: comicDetail)
+            cell.setComicData(comic: comic)
             
             return cell
             
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BioCell", for: indexPath) as! BioTableViewCell
-            cell.setComicData(comic: comicDetail!)
+            cell.setComicData(comic: comic!)
             
             return cell
         }
         else if indexPath.section == 2{
             let cell = tableView.dequeueReusableCell(withIdentifier: "MoreInfoCell", for: indexPath) as! IssueNumberTableViewCell
-            cell.setComicDetails(comic: comicDetail!)
+            cell.setComicDetails(comic: comic!)
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PageCountCell", for: indexPath) as! PageCountTableViewCell
-            cell.setComicDetails(comic: comicDetail!)
+            cell.setComicDetails(comic: comic!)
             return cell
         }
     }
