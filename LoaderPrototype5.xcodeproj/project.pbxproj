@@ -295,11 +295,11 @@
 		DFFBAE56290147B800AA73A8 /* DetailScreenViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DFFBAE592901606200AA73A8 /* DetailViewModel.swift */,
 				DFFB199629029BDF00E3238C /* NameTableCellViewModel.swift */,
 				DFFB19982902D13900E3238C /* IssueNumberCellViewModel.swift */,
 				DFFB199A2902DA2200E3238C /* BioCellViewModel.swift */,
 				DFFB199C2905659000E3238C /* PageCountCellViewModel.swift */,
+				DFFBAE592901606200AA73A8 /* DetailViewModel.swift */,
 			);
 			path = DetailScreenViewModel;
 			sourceTree = "<group>";

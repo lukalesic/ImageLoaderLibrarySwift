@@ -75,7 +75,6 @@ class DetailViewController: UIViewController {
         headerTitle.autoPinEdge(toSuperviewEdge: .right)
         headerTitle.autoPinEdge(toSuperviewEdge: .bottom, withInset: 8)
     }
-    
 }
 
 

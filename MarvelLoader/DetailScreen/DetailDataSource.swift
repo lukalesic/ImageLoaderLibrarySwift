@@ -43,5 +43,6 @@ class DetailDataSource: NSObject, UITableViewDataSource {
             cell.setComicDetails(comic: comic!)
             return cell
         }
-    }
+    } 
 }
+

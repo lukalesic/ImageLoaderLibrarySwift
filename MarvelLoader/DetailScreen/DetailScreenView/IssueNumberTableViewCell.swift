@@ -11,13 +11,18 @@ class IssueNumberTableViewCell: UITableViewCell {
     
     var IssueNumberViewModel = IssueNumberCellViewModel()
     
-    var issueNumber = UILabel()
+    var issueNumber: UILabel = {
+            let label = UILabel()
+            label.numberOfLines = 0
+            label.font = label.font.withSize(15)
+            label.text = ""
+            return label
+        }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .clear
         self.backgroundColor = .clear
-        
         displayLayout()
     }
     
@@ -27,10 +32,13 @@ class IssueNumberTableViewCell: UITableViewCell {
     
     func displayLayout(){
         contentView.addSubview(issueNumber)
-        issueNumber = IssueNumberViewModel.setupIssueNumber(issueNumber)
-        IssueNumberViewModel.setIssueNumberConstraints(issueNumber: issueNumber)
+        setIssueNumberConstraints()
     }
     
+    func setIssueNumberConstraints(){
+       issueNumber.configureForAutoLayout()
+       issueNumber.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.init(top: 8, left: 10, bottom: 8, right: 10))
+   }
 
     func setComicDetails(comic: Comic){
         if comic.issueNumber == 0 {issueNumber.text = "No issue number available"}
