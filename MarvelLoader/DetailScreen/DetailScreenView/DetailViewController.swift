@@ -9,7 +9,6 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    var comic: Comic?
     let infoImage = UIImage(systemName: "info.circle")!.withTintColor(.systemPink, renderingMode: .alwaysOriginal)
 
     var tableView: UITableView = {
@@ -20,7 +19,7 @@ class DetailViewController: UIViewController {
     
     var dataSource = DetailDataSource()
 
-    var detailViewModel = DetailViewModel()
+    var viewModel = DetailViewModel()
     
     
     override func viewDidLoad() {
@@ -49,7 +48,7 @@ class DetailViewController: UIViewController {
         tableView.register(PageCountTableViewCell.self, forCellReuseIdentifier: "PageCountCell")
 
         tableView.dataSource = dataSource
-        dataSource.comic = comic
+        dataSource.comic = viewModel.comic
         tableView.delegate = self
     }
     

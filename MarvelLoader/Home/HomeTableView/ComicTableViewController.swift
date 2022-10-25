@@ -73,11 +73,8 @@ extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let comic = comicsViewModel.comics?.data?.comicbooks?[indexPath.row]
         let detailView = DetailViewController()
-        //tu predati u viewModel onaj comic
-        //kao tipa
-        //detailView.viewModel.comic = comic
-        //detailView.detailViewModel.comic = comic
-        detailView.comic = comic
+      
+        detailView.viewModel.comic = comic
         navigationController?.pushViewController(detailView, animated: true)
     }
 }
