@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol ViewModelDelegate: AnyObject {
     func reloadTable()
@@ -21,6 +22,12 @@ class ComicsViewModel {
       let viewModel = ComicCellViewModel(comic: comic)
       return viewModel
     }
+    
+    func numberOfRows(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return comics?.data?.comicbooks?.count ?? 10
+        //pojednostavniti, probati napraviti da ima instanca bas comics
+    }
+    
 
     func loadData() async  {
         let request = URL(string: generatedURL)!

@@ -18,9 +18,17 @@ class DetailViewController: UIViewController {
     }()
     
     var dataSource = DetailDataSource()
-
     var viewModel = DetailViewModel()
+    var comic: Comic?
     
+    init(comic: Comic?) {
+            self.comic = comic
+            super.init(nibName: nil, bundle: nil)
+        }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +56,7 @@ class DetailViewController: UIViewController {
         tableView.register(PageCountTableViewCell.self, forCellReuseIdentifier: "PageCountCell")
 
         tableView.dataSource = dataSource
-        dataSource.comic = viewModel.comic
+        dataSource.comic = comic
         tableView.delegate = self
     }
     

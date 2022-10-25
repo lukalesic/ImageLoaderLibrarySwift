@@ -61,8 +61,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
 extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return comicsViewModel.comics?.data?.comicbooks?.count ?? 10
-        //
+        return comicsViewModel.numberOfRows(tableView, numberOfRowsInSection: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,9 +75,8 @@ extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let comic = comicsViewModel.comics?.data?.comicbooks?[indexPath.row]
-        let detailView = DetailViewController()
+        let detailView = DetailViewController(comic: comic)
       
-        detailView.viewModel.comic = comic
         navigationController?.pushViewController(detailView, animated: true)
     }
 }
