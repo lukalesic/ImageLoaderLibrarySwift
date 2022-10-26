@@ -37,10 +37,10 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
     
     func configureTableView() {
         view.addSubview(tableView)
-        
-        //pure layout ovdje definiraj
+        tableView.configureForAutoLayout()
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero)
+
         setTableViewDelegates()
-        tableView.rowHeight = 100  //automatic dimensions..UItableview.cellautomaticdimensions.  comicCell onda mora imati postavlejne constraintove da tableView izracuna njegov height samostalno. 
         tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
     }
     
@@ -48,12 +48,6 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         comicsViewModel.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
-        //ovo s frame izmjeniti u pure tj ukloniti idealno
     }
 }
  
@@ -79,4 +73,12 @@ extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
       
         navigationController?.pushViewController(detailView, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+   // func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+     //   return UITableView.automaticDimension
+   // }
 }

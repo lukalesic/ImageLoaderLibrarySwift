@@ -17,8 +17,8 @@ class ComicCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(comicImageView)
-        addSubview(titleLabel)
+        contentView.addSubview(comicImageView)
+        contentView.addSubview(titleLabel)
         
         configureImageView()
         configureTitleLabel()
@@ -51,6 +51,7 @@ class ComicCell: UITableViewCell {
     func configureImageView() {
         comicImageView.layer.cornerRadius = 10
         comicImageView.clipsToBounds = true
+        comicImageView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func configureTitleLabel(){
@@ -61,14 +62,18 @@ class ComicCell: UITableViewCell {
     func setImageConstraints(){
         comicImageView.configureForAutoLayout()
         comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
-        comicImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 20.0)
+        comicImageView.autoPinEdge(.left, to: .left, of: contentView, withOffset: 20)
+        comicImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
+        comicImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+
         comicImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
     
     func setTitleLabelConstraints(){
         titleLabel.configureForAutoLayout()
         titleLabel.autoPinEdge(.left, to: .right, of: comicImageView, withOffset: 10)
-        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 20.0)
+        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 20)
+
         titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
 }
