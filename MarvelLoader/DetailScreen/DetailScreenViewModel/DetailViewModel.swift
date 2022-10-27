@@ -7,28 +7,30 @@
 
 import Foundation
 
-
 class DetailViewModel {
+
+    let comic: Comic?
     
-    var comic: Comic?
+    init(comic: Comic?){
+        self.comic = comic
+    }
     
-    
-    func nameTableCellViewModel(comic: Comic?) -> NameTableCellViewModel {
+    func nameTableCellViewModel() -> NameTableCellViewModel {
         let viewModel = NameTableCellViewModel(comic: comic)
         return viewModel
     }
     
-    func issueNumberCellViewModel(comic: Comic?) -> IssueNumberCellViewModel {
+    func issueNumberCellViewModel() -> IssueNumberCellViewModel {
         let viewModel = IssueNumberCellViewModel(comic: comic!)
         return viewModel
     }
     
-    func bioCellViewModel(comic: Comic?) -> BioCellViewModel {
+    func bioCellViewModel() -> BioCellViewModel {
         let viewModel = BioCellViewModel(comic: comic!)
         return viewModel
     }
     
-    func pageCountViewModel(comic: Comic?) -> PageCountViewModel {
+    func pageCountViewModel() -> PageCountViewModel {
         let viewModel = PageCountViewModel(comic: comic!)
         return viewModel
     }

@@ -9,8 +9,8 @@ import UIKit
 
 class DetailDataSource: NSObject, UITableViewDataSource {
     
-    var comic: Comic?
-    var viewModel = DetailViewModel()
+    var viewModel: DetailViewModel?
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4
@@ -24,28 +24,28 @@ class DetailDataSource: NSObject, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NameCell", for: indexPath) as! NameTableViewCell
-            let nameCellViewModel = viewModel.nameTableCellViewModel(comic: comic)
+            let nameCellViewModel = viewModel!.nameTableCellViewModel()
             cell.updateWith(viewModel: nameCellViewModel)
 
             return cell
             
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BioCell", for: indexPath) as! BioTableViewCell
-            let bioCellViewModel = viewModel.bioCellViewModel(comic: comic)
+            let bioCellViewModel = viewModel!.bioCellViewModel()
             cell.updateWith(viewModel: bioCellViewModel)
             
             return cell
         }
         else if indexPath.section == 2{
             let cell = tableView.dequeueReusableCell(withIdentifier: "MoreInfoCell", for: indexPath) as! IssueNumberTableViewCell
-            let issueNumberViewModel = viewModel.issueNumberCellViewModel(comic: comic!)
+            let issueNumberViewModel = viewModel!.issueNumberCellViewModel()
             cell.updateWith(viewModel: issueNumberViewModel)
             
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PageCountCell", for: indexPath) as! PageCountTableViewCell
-            let pageCountViewModel = viewModel.pageCountViewModel(comic: comic!)
+            let pageCountViewModel = viewModel!.pageCountViewModel()
             cell.updateWith(viewModel: pageCountViewModel)
 
             return cell

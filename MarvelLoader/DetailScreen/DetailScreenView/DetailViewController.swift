@@ -17,14 +17,13 @@ class DetailViewController: UIViewController {
         return table
     }()
     
-    var dataSource = DetailDataSource()
-    var viewModel = DetailViewModel()
-    var comic: Comic?
+    let dataSource = DetailDataSource()
+    let viewModel: DetailViewModel
     
-    init(comic: Comic?) {
-            self.comic = comic
-            super.init(nibName: nil, bundle: nil)
-        }
+    init(viewModel: DetailViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -56,7 +55,7 @@ class DetailViewController: UIViewController {
         tableView.register(PageCountTableViewCell.self, forCellReuseIdentifier: "PageCountCell")
 
         tableView.dataSource = dataSource
-        dataSource.comic = comic
+        dataSource.viewModel = viewModel
         tableView.delegate = self
     }
     

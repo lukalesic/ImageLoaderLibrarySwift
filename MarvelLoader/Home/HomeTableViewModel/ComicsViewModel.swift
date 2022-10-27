@@ -23,8 +23,9 @@ class ComicsViewModel {
         return viewModel
     }
     
+    //viska parametri
     func numberOfRows(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return comicbooks?.count ?? 10
+        return comicbooks?.count ?? 0
     }
     
 
