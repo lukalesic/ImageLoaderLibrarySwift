@@ -23,6 +23,7 @@ class NameTableViewCell: UITableViewCell {
             view.layer.cornerRadius = 12
             view.backgroundColor = .systemMint
             view.clipsToBounds = true
+
             return view
         }()
     
@@ -71,7 +72,10 @@ class NameTableViewCell: UITableViewCell {
 
     func setPhotoConstraints(){
        container.configureForAutoLayout()
-       container.autoSetDimensions(to: CGSize(width: 120, height: 120))
+        NSLayoutConstraint.autoSetPriority(UILayoutPriority(rawValue: 999)) {
+            container.autoSetDimensions(to: CGSize(width: 120, height: 120))
+        }
+
        container.autoPinEdges(toSuperviewMarginsExcludingEdge: .right)
        
        container.addSubview(coverPhoto)

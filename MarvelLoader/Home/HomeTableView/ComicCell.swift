@@ -51,22 +51,19 @@ class ComicCell: UITableViewCell {
     func configureImageView() {
         comicImageView.layer.cornerRadius = 10
         comicImageView.clipsToBounds = true
-        comicImageView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func configureTitleLabel(){
         titleLabel.numberOfLines = 0
-        titleLabel.adjustsFontSizeToFitWidth = true
     }
     
     func setImageConstraints(){
         comicImageView.configureForAutoLayout()
-        comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
-        comicImageView.autoPinEdge(.left, to: .left, of: contentView, withOffset: 20)
-        comicImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
-        comicImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
-
-        comicImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        comicImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 0), excludingEdge: .right)
+        
+          NSLayoutConstraint.autoSetPriority(UILayoutPriority(rawValue: 999)) {
+            comicImageView.autoSetDimensions(to: CGSize(width: 80, height: 80))
+        }
     }
     
     func setTitleLabelConstraints(){

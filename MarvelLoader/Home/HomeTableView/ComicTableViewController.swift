@@ -39,7 +39,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         view.addSubview(tableView)
         tableView.configureForAutoLayout()
         tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero)
-
+        
         setTableViewDelegates()
         tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
     }
@@ -70,15 +70,10 @@ extension ComicTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let comic = comicsViewModel.comicbooks![indexPath.row]
         let detailView = DetailViewController(comic: comic)
-      
         navigationController?.pushViewController(detailView, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
-   // func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-     //   return UITableView.automaticDimension
-   // }
 }
