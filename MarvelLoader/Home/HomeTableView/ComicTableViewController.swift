@@ -8,62 +8,56 @@
 import UIKit
 
 class ComicTableViewController: UIViewController, ViewModelDelegate {
-    
-    enum Section: Hashable {
-      case main
-    }
         
     var tableView = UITableView(frame: CGRect(), style: .insetGrouped)
     private var comicsViewModel = ComicsViewModel()
+    
     private lazy var dataSource = makeDataSource()
     
     typealias DataSource = UITableViewDiffableDataSource<Section, Comic>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Comic>
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Marvel Loader"
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.red]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-
+        tableView.dataSource = dataSource
+        
+        //izbaciti task  odavdje i async iz funkcije
         Task{
             do {
-                try await comicsViewModel.loadData()
+                try await comicsViewModel.loadData(completion: { success in
+                    DispatchQueue.main.async {
+                        self.applySnapshot(animatingDifferences: true)
+                    }
+                })
+                
             }
             catch{ print("error") }
         }
-        
             configureTableView()
-            tableView.dataSource = self.dataSource
-            applySnapshot(animatingDifferences: false)
-
-        
 }
     
-    func reloadTable() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
+    //mainactor
     func applySnapshot(animatingDifferences: Bool = true) {
-      var snapshot = Snapshot()
+        //vm
+        var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(comicsViewModel.comicbooks!, toSection: .main)
-      dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+      dataSource.apply(snapshot, animatingDifferences: true)
+        print("snapshot applied")
     }
     
     func makeDataSource() -> DataSource {
-        
         return DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, comic in
+            cellProvider: {  tableView, indexPath, _  in
                 
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: Cells.comicCell,
                     for: indexPath) as? ComicCell
-                
+                                
                 let cellViewModel = self.comicsViewModel.comicCellViewModel(at: indexPath)
                 cell!.updateWith(viewModel: cellViewModel)
                 
@@ -71,42 +65,38 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
             })
     }
 
-
     func configureTableView() {
         view.addSubview(tableView)
         tableView.configureForAutoLayout()
         tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero)
         
-     //   setTableViewDelegates()
+       setTableViewDelegates()
         tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
     }
     
     func setTableViewDelegates(){
         comicsViewModel.delegate = self
         tableView.delegate = self
-       // tableView.dataSource = source
+    }
+}
+
+extension ComicTableViewController {
+    enum Section: Hashable {
+      case main
+    }
+    
+    func reloadTable() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            //tu moze snapshot
+        }
     }
 }
 
 extension ComicTableViewController: UITableViewDelegate {
-    
- /*   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return comicsViewModel.numberOfRows(numberOfRowsInSection: section)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Cells.comicCell) as! ComicCell
-         
-        let cellViewModel = self.comicsViewModel.comicCellViewModel(at: indexPath)
-        cell.updateWith(viewModel: cellViewModel)
-        return cell
-        
-    }
-   */
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-       // let comic = comicsViewModel.comicbooks![indexPath.row]
         
        guard let comic = dataSource.itemIdentifier(for: indexPath) else {
           return
@@ -122,8 +112,5 @@ extension ComicTableViewController: UITableViewDelegate {
     }
 }
 
-    
-    
 
-    
 

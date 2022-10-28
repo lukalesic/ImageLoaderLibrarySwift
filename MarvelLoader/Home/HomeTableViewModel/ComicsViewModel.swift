@@ -20,7 +20,6 @@ class ComicsViewModel {
     func comicCellViewModel(at indexPath: IndexPath) -> ComicCellViewModel {
         let comic = comicbooks?[indexPath.row]
         let viewModel = ComicCellViewModel(comic: comic)
-        print("test")
         return viewModel
     }
     
@@ -28,8 +27,8 @@ class ComicsViewModel {
         return comicbooks?.count ?? 0
     }
     
-
-    func loadData() async  {
+//task ovdje moze ici, mozda tu maknuti async
+    func loadData( completion: @escaping (_ success: Bool) -> Void)  async  {
         let request = URL(string: generatedURL)!
         
         do{
@@ -38,8 +37,10 @@ class ComicsViewModel {
                 case .success(let result):
                     self.comicbooks = result.data?.comicbooks
                     self.delegate?.reloadTable()
+                    completion(true)
                 case .failure(let error):
                     print(error)
+                    
                 }
             })
         }
