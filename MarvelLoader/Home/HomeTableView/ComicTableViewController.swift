@@ -17,14 +17,14 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
     
     typealias DataSource = UITableViewDiffableDataSource<Section, Comic>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Comic>
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Marvel Loader"
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.red]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-        tableView.dataSource = dataSource
         
+        tableView.dataSource = dataSource
         comicsViewModel.loadData()
         configureTableView()
     }
@@ -33,7 +33,6 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         return DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, _  in
-                
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: Cells.comicCell,
                     for: indexPath) as? ComicCell
@@ -61,8 +60,8 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
 
 extension ComicTableViewController {
     
-    func reloadTable() {
-        DispatchQueue.main.async {
+    func reloadTable() async {
+        await MainActor.run {
             self.comicsViewModel.applySnapshot(animatingDifferences: true, dataSource: self.dataSource)
         }
     }

@@ -30,11 +30,11 @@ class ComicsViewModel {
          var snapshot = Snapshot()
          snapshot.appendSections([.main])
          snapshot.appendItems(comicbooks!, toSection: .main)
-       dataSource.apply(snapshot, animatingDifferences: true)
+         dataSource.apply(snapshot, animatingDifferences: true)
          print("snapshot applied")
      }
     
-    func loadData()    {
+    func loadData() {
         let request = URL(string: generatedURL)!
         Task{
             do{
@@ -42,7 +42,9 @@ class ComicsViewModel {
                     switch result {
                     case .success(let result):
                         self.comicbooks = result.data?.comicbooks
-                        self.delegate?.reloadTable()
+                        Task{
+                            await self.delegate?.reloadTable()
+                        }
                     case .failure(let error):
                         print(error)
                         
