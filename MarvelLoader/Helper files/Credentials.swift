@@ -15,3 +15,7 @@ var generatedURL: String {
     let generatedHash = "\(timeStamp)\(privateKey)\(publicKey)".MD5
     return "https://gateway.marvel.com/v1/public/comics?ts=\(timeStamp)&apikey=\(publicKey)&hash=\(generatedHash)"
 }
+
+enum Section: Hashable {
+  case main
+}

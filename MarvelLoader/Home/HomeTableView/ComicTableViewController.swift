@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class ComicTableViewController: UIViewController, ViewModelDelegate {
         
     var tableView = UITableView(frame: CGRect(), style: .insetGrouped)
@@ -24,24 +25,8 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         tableView.dataSource = dataSource
         
-        comicsViewModel.loadData { success in
-            Task{
-                await MainActor.run {
-                    self.applySnapshot(animatingDifferences: true)
-                }
-            }
-        }
-
-            configureTableView()
-}
-    
-   @MainActor func applySnapshot(animatingDifferences: Bool = true) {
-        //vm
-        var snapshot = Snapshot()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(comicsViewModel.comicbooks!, toSection: .main)
-      dataSource.apply(snapshot, animatingDifferences: true)
-        print("snapshot applied")
+        comicsViewModel.loadData()
+        configureTableView()
     }
     
     func makeDataSource() -> DataSource {
@@ -55,7 +40,6 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
                                 
                 let cellViewModel = self.comicsViewModel.comicCellViewModel(at: indexPath)
                 cell!.updateWith(viewModel: cellViewModel)
-                
                 return cell
             })
     }
@@ -76,14 +60,10 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
 }
 
 extension ComicTableViewController {
-    enum Section: Hashable {
-      case main
-    }
     
     func reloadTable() {
         DispatchQueue.main.async {
-            self.tableView.reloadData()
-            //tu moze snapshot
+            self.comicsViewModel.applySnapshot(animatingDifferences: true, dataSource: self.dataSource)
         }
     }
 }
@@ -96,7 +76,7 @@ extension ComicTableViewController: UITableViewDelegate {
        guard let comic = dataSource.itemIdentifier(for: indexPath) else {
           return
         }
-       
+
         let detailVM = DetailViewModel(comic: comic)
         let detailView = DetailViewController(viewModel: detailVM)
         navigationController?.pushViewController(detailView, animated: true)

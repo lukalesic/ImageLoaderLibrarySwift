@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-protocol ViewModelDelegate: AnyObject {
-    func reloadTable()
-}
-
 class ComicsViewModel {
+    
+    typealias DataSource = UITableViewDiffableDataSource<Section, Comic>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Comic>
    
     var comicbooks: [Comic]? = []
     weak var delegate: ViewModelDelegate?
@@ -27,7 +26,15 @@ class ComicsViewModel {
         return comicbooks?.count ?? 0
     }
     
-    func loadData( completion: @escaping (_ success: Bool) -> Void)    {
+    @MainActor func applySnapshot(animatingDifferences: Bool = true, dataSource: DataSource) {
+         var snapshot = Snapshot()
+         snapshot.appendSections([.main])
+         snapshot.appendItems(comicbooks!, toSection: .main)
+       dataSource.apply(snapshot, animatingDifferences: true)
+         print("snapshot applied")
+     }
+    
+    func loadData()    {
         let request = URL(string: generatedURL)!
         Task{
             do{
@@ -36,7 +43,6 @@ class ComicsViewModel {
                     case .success(let result):
                         self.comicbooks = result.data?.comicbooks
                         self.delegate?.reloadTable()
-                        completion(true)
                     case .failure(let error):
                         print(error)
                         

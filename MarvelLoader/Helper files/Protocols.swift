@@ -15,3 +15,7 @@ protocol ImageDownloading {
 protocol JSONParsing {
     func downloadObject(url: URL, completionHandler: @escaping (Result<ComicBookBaseData, Error>) -> Void) async throws
 }
+
+protocol ViewModelDelegate: AnyObject {
+    func reloadTable()
+}
