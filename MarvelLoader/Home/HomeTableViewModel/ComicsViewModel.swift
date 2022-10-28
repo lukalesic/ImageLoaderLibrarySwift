@@ -27,25 +27,25 @@ class ComicsViewModel {
         return comicbooks?.count ?? 0
     }
     
-//task ovdje moze ici, mozda tu maknuti async
-    func loadData( completion: @escaping (_ success: Bool) -> Void)  async  {
+    func loadData( completion: @escaping (_ success: Bool) -> Void)    {
         let request = URL(string: generatedURL)!
-        
-        do{
-            try await downloadObject(url: request, completionHandler: { result in
-                switch result {
-                case .success(let result):
-                    self.comicbooks = result.data?.comicbooks
-                    self.delegate?.reloadTable()
-                    completion(true)
-                case .failure(let error):
-                    print(error)
-                    
-                }
-            })
-        }
-        catch{
-            print("error")
+        Task{
+            do{
+                try await downloadObject(url: request, completionHandler: { result in
+                    switch result {
+                    case .success(let result):
+                        self.comicbooks = result.data?.comicbooks
+                        self.delegate?.reloadTable()
+                        completion(true)
+                    case .failure(let error):
+                        print(error)
+                        
+                    }
+                })
+            }
+            catch{
+                print("error")
+            }
         }
     }
     

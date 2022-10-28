@@ -24,23 +24,18 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         tableView.dataSource = dataSource
         
-        //izbaciti task  odavdje i async iz funkcije
-        Task{
-            do {
-                try await comicsViewModel.loadData(completion: { success in
-                    DispatchQueue.main.async {
-                        self.applySnapshot(animatingDifferences: true)
-                    }
-                })
-                
+        comicsViewModel.loadData { success in
+            Task{
+                await MainActor.run {
+                    self.applySnapshot(animatingDifferences: true)
+                }
             }
-            catch{ print("error") }
         }
+
             configureTableView()
 }
     
-    //mainactor
-    func applySnapshot(animatingDifferences: Bool = true) {
+   @MainActor func applySnapshot(animatingDifferences: Bool = true) {
         //vm
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
