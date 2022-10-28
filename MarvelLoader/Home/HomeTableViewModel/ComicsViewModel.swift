@@ -20,11 +20,11 @@ class ComicsViewModel {
     func comicCellViewModel(at indexPath: IndexPath) -> ComicCellViewModel {
         let comic = comicbooks?[indexPath.row]
         let viewModel = ComicCellViewModel(comic: comic)
+        print("test")
         return viewModel
     }
     
-    //viska parametri
-    func numberOfRows(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfRows(numberOfRowsInSection section: Int) -> Int {
         return comicbooks?.count ?? 0
     }
     

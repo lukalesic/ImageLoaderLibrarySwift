@@ -11,7 +11,7 @@ import PureLayout
 class ComicCell: UITableViewCell {
     
     private var comicImageView = UIImageView()
-    private var titleLabel = UILabel()
+     var titleLabel = UILabel()
     let loader = Loader()
     
     
