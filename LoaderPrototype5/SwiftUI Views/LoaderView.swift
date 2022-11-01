@@ -39,7 +39,7 @@ struct LoaderView: View {
             else {
                 ZStack{
                     placeholder()
-                    ProgressView()
+                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                 }
             }

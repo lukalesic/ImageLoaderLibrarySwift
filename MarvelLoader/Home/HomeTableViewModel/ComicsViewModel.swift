@@ -12,6 +12,8 @@ class ComicsViewModel {
     
     typealias DataSource = UITableViewDiffableDataSource<Section, Comic>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Comic>
+    var activityIndicator = UIActivityIndicatorView()
+
    
     var comicbooks: [Comic]? = []
     weak var delegate: ViewModelDelegate?
@@ -22,10 +24,6 @@ class ComicsViewModel {
         return viewModel
     }
     
-    func numberOfRows(numberOfRowsInSection section: Int) -> Int {
-        return comicbooks?.count ?? 0
-    }
-    
     @MainActor func applySnapshot(animatingDifferences: Bool = true, dataSource: DataSource) {
          var snapshot = Snapshot()
          snapshot.appendSections([.main])
@@ -34,7 +32,7 @@ class ComicsViewModel {
          print("snapshot applied")
      }
     
-    func loadData() {
+    func loadData(completion: @escaping (Bool) -> Void) {
         let request = URL(string: generatedURL)!
         Task{
             do{
@@ -42,12 +40,13 @@ class ComicsViewModel {
                     switch result {
                     case .success(let result):
                         self.comicbooks = result.data?.comicbooks
+                        completion(true)
                         Task{
                             await self.delegate?.reloadTable()
                         }
                     case .failure(let error):
                         print(error)
-                        
+                        completion(false)
                     }
                 })
             }
@@ -62,7 +61,7 @@ class ComicsViewModel {
             let decode = JSONDecoder()
             if let data = data {
                 do{
-                    let result = try decode.decode(ComicBookBaseData.self, from: data)
+                     let result = try decode.decode(ComicBookBaseData.self, from: data)
                     DispatchQueue.main.async {
                         print("data loaded!!")
                         completionHandler(.success(result))
@@ -71,6 +70,9 @@ class ComicsViewModel {
                 catch{print("Error")
                     completionHandler(.failure(error))
                 }
+            }else {
+                print("API Call not successful")
+                completionHandler(.failure(InternetError.noInternet))
             }
         }
         task.resume()
