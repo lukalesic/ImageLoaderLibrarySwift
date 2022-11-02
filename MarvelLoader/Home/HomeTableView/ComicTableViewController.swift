@@ -7,13 +7,13 @@
 
 import UIKit
 
+protocol Statable {
+  func setSuccessState()
+  func setLoadingState()
+  func setErrorState()
+}
 
-
-class ComicTableViewController: UIViewController, ViewModelDelegate {
-    
-     private var isLoading = false
-     private var isLoaded = false
-     private var isShowingError = false
+class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
     
     let errorMessage = UILabel()
     var refreshControl = UIRefreshControl()
@@ -36,23 +36,16 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         
         configureTableView()
         tableView.dataSource = dataSource
-        
-        activityIndicator.startAnimating()
-        //isLoaing starts here
         refreshControl.addTarget(self, action: #selector(refreshTable), for: UIControl.Event.valueChanged)
         
         comicsViewModel.loadData { success in
             switch success {
             case true:
-                self.activityIndicator.stopAnimating()
-                //isLoaded
+                self.setSuccessState()
                 
             case false:
                 DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                    self.errorMessage.text = "No internet connection available"
-                    self.setupButton()
-                    //isShowingError
+                    self.setErrorState()
                 }
                 
             }
@@ -61,13 +54,17 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
     
     @objc func refreshTable(send: UIRefreshControl){
         Task {
-            self.errorMessage.isHidden = true
-            self.refreshButton.isHidden = true
-            activityIndicator.startAnimating()
-            self.comicsViewModel.loadData{_ in
-                self.activityIndicator.stopAnimating()
-                //isLoaded
+            setLoadingState()
+            self.comicsViewModel.loadData{success in
+                switch success{
+                case true:
+                    self.setSuccessState()
 
+                case false:
+                    DispatchQueue.main.async {
+                        self.setErrorState()
+                    }
+                }
             }
             await reloadTable()
             self.refreshControl.endRefreshing()
@@ -87,15 +84,27 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
                 return cell
             })
     }
+    
 
     func configureTableView() {
         view.addSubview(tableView)
+        setTableViewDelegates()
+        tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
+        
+        setTableViewConstraints()
+        setLoadingState()
+    }
+    
+    
+    func setTableViewConstraints (){
+
         tableView.addSubview(activityIndicator)
         tableView.addSubview(errorMessage)
         tableView.addSubview(refreshButton)
         tableView.addSubview(refreshControl)
         refreshButton.autoCenterInSuperview()
-       errorMessage.autoPinEdge(.bottom, to: .top, of: refreshButton, withOffset: -15)
+        errorMessage.configureForAutoLayout()
+        errorMessage.autoPinEdge(.bottom, to: .top, of: refreshButton, withOffset: -15)
         errorMessage.autoAlignAxis(.vertical, toSameAxisOf: refreshButton, withOffset: 0)
         activityIndicator.configureForAutoLayout()
         activityIndicator.autoCenterInSuperview()
@@ -104,14 +113,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
 
         tableView.configureForAutoLayout()
         tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero)
-        
-        setTableViewDelegates()
-        tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
-        
-        if isLoading{
-            
-        }
-        
+
     }
     
     func setTableViewDelegates(){
@@ -129,6 +131,27 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         refreshButton.layer.cornerRadius = 6
         refreshButton.addTarget(self, action: #selector(self.refreshTable), for: .touchUpInside)
 
+    }
+    
+    func setSuccessState() {
+        self.activityIndicator.stopAnimating()
+        errorMessage.isHidden = true
+        refreshButton.isHidden = true
+    }
+    
+    func setLoadingState() {
+        activityIndicator.startAnimating()
+        errorMessage.isHidden = true
+        refreshButton.isHidden = true
+    }
+    
+    func setErrorState() {
+        self.activityIndicator.stopAnimating()
+        self.errorMessage.isHidden = false
+        
+        self.errorMessage.text = "No internet connection available"
+        self.setupButton()
+        
     }
 }
 
