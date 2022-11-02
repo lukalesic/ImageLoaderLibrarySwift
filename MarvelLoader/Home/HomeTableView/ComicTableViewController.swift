@@ -99,8 +99,8 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
     func setTableViewConstraints (){
 
         tableView.addSubview(activityIndicator)
-        tableView.addSubview(errorMessage)
-        tableView.addSubview(refreshButton)
+        view.addSubview(errorMessage)
+        view.addSubview(refreshButton)
         tableView.addSubview(refreshControl)
         refreshButton.autoCenterInSuperview()
         errorMessage.configureForAutoLayout()
@@ -108,7 +108,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
         errorMessage.autoAlignAxis(.vertical, toSameAxisOf: refreshButton, withOffset: 0)
         activityIndicator.configureForAutoLayout()
         activityIndicator.autoCenterInSuperview()
-
+        
         activityIndicator.color = UIColor.red
 
         tableView.configureForAutoLayout()
@@ -137,21 +137,24 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
         self.activityIndicator.stopAnimating()
         errorMessage.isHidden = true
         refreshButton.isHidden = true
+        tableView.isHidden = false
     }
     
     func setLoadingState() {
         activityIndicator.startAnimating()
         errorMessage.isHidden = true
         refreshButton.isHidden = true
+        tableView.isHidden = false
     }
     
     func setErrorState() {
         self.activityIndicator.stopAnimating()
         self.errorMessage.isHidden = false
-        
         self.errorMessage.text = "No internet connection available"
-        self.setupButton()
         
+        self.setupButton()
+        view.backgroundColor = UIColor.systemBackground
+        tableView.isHidden = true
     }
 }
 
@@ -180,6 +183,7 @@ extension ComicTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+        
     }
 }
 
