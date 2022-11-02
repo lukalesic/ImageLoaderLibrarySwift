@@ -8,7 +8,12 @@
 import UIKit
 
 
+
 class ComicTableViewController: UIViewController, ViewModelDelegate {
+    
+     private var isLoading = false
+     private var isLoaded = false
+     private var isShowingError = false
     
     let errorMessage = UILabel()
     var refreshControl = UIRefreshControl()
@@ -33,17 +38,21 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         tableView.dataSource = dataSource
         
         activityIndicator.startAnimating()
+        //isLoaing starts here
         refreshControl.addTarget(self, action: #selector(refreshTable), for: UIControl.Event.valueChanged)
+        
         comicsViewModel.loadData { success in
             switch success {
             case true:
                 self.activityIndicator.stopAnimating()
+                //isLoaded
                 
             case false:
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.errorMessage.text = "No internet connection available"
                     self.setupButton()
+                    //isShowingError
                 }
                 
             }
@@ -57,6 +66,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
             activityIndicator.startAnimating()
             self.comicsViewModel.loadData{_ in
                 self.activityIndicator.stopAnimating()
+                //isLoaded
 
             }
             await reloadTable()
@@ -95,8 +105,13 @@ class ComicTableViewController: UIViewController, ViewModelDelegate {
         tableView.configureForAutoLayout()
         tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero)
         
-       setTableViewDelegates()
+        setTableViewDelegates()
         tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
+        
+        if isLoading{
+            
+        }
+        
     }
     
     func setTableViewDelegates(){
