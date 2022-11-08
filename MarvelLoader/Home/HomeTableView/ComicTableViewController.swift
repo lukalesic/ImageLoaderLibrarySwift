@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 protocol Statable {
   func setSuccessState()
   func setLoadingState()
-  func setErrorState()
+  func setErrorState(error: Error)
 }
 
 class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
@@ -18,6 +19,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
     let errorMessage = UILabel()
     var refreshControl = UIRefreshControl()
     let refreshButton = UIButton(type: .system)
+    var cancellable: AnyCancellable?
         
     var tableView = UITableView(frame: CGRect(), style: .insetGrouped)
     private var comicsViewModel = ComicsViewModel()
@@ -38,34 +40,14 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
         tableView.dataSource = dataSource
         refreshControl.addTarget(self, action: #selector(refreshTable), for: UIControl.Event.valueChanged)
         
-        comicsViewModel.loadData { success in
-            switch success {
-            case true:
-                self.setSuccessState()
-                
-            case false:
-                DispatchQueue.main.async {
-                    self.setErrorState()
-                }
-                
-            }
-        }
+        comicsViewModel.loadData()
+
     }
     
     @objc func refreshTable(send: UIRefreshControl){
         Task {
             setLoadingState()
-            self.comicsViewModel.loadData{success in
-                switch success{
-                case true:
-                    self.setSuccessState()
-
-                case false:
-                    DispatchQueue.main.async {
-                        self.setErrorState()
-                    }
-                }
-            }
+            self.comicsViewModel.loadData()
             await reloadTable()
             self.refreshControl.endRefreshing()
         }
@@ -87,28 +69,29 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
     
 
     func configureTableView() {
+        self.bind()
         view.addSubview(tableView)
         setTableViewDelegates()
         tableView.register(ComicCell.self, forCellReuseIdentifier: Cells.comicCell)
-        
         setTableViewConstraints()
-        setLoadingState()
-    }
+     }
     
     
     func setTableViewConstraints (){
 
-        tableView.addSubview(activityIndicator)
+        view.addSubview(activityIndicator)
         view.addSubview(errorMessage)
         view.addSubview(refreshButton)
         tableView.addSubview(refreshControl)
         refreshButton.autoCenterInSuperview()
+        
         errorMessage.configureForAutoLayout()
         errorMessage.autoPinEdge(.bottom, to: .top, of: refreshButton, withOffset: -15)
         errorMessage.autoAlignAxis(.vertical, toSameAxisOf: refreshButton, withOffset: 0)
+        errorMessage.numberOfLines = 0
+
         activityIndicator.configureForAutoLayout()
         activityIndicator.autoCenterInSuperview()
-        
         activityIndicator.color = UIColor.red
 
         tableView.configureForAutoLayout()
@@ -120,6 +103,30 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
         comicsViewModel.delegate = self
         tableView.delegate = self
     }
+    
+    func bind() {
+        cancellable = comicsViewModel
+          .$state
+          .receive(on: RunLoop.main)
+          .sink { newState in
+            print("State changed: \(newState)")
+              switch newState {
+                  
+              case .empty:
+                  self.setLoadingState()
+                  
+              case .loading:
+                  self.setLoadingState()
+             
+              case .populated:
+                  self.setSuccessState()
+                  
+              case .error(error: let error):
+                  self.setErrorState(error: error)
+              }
+          }
+      }
+    
     
     func setupButton() {
         refreshButton.isHidden = false
@@ -140,17 +147,17 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
         tableView.isHidden = false
     }
     
-    func setLoadingState() {
+   @MainActor func setLoadingState() {
         activityIndicator.startAnimating()
         errorMessage.isHidden = true
         refreshButton.isHidden = true
-        tableView.isHidden = false
+        tableView.isHidden = true
     }
     
-    func setErrorState() {
+    func setErrorState(error: Error) {
         self.activityIndicator.stopAnimating()
         self.errorMessage.isHidden = false
-        self.errorMessage.text = "No internet connection available"
+        self.errorMessage.text =  "\(error.localizedDescription)"
         
         self.setupButton()
         view.backgroundColor = UIColor.systemBackground
