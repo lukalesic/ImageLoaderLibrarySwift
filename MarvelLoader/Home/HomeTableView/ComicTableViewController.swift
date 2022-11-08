@@ -151,7 +151,7 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
         activityIndicator.startAnimating()
         errorMessage.isHidden = true
         refreshButton.isHidden = true
-        tableView.isHidden = true
+        tableView.isHidden = false
     }
     
     func setErrorState(error: Error) {
@@ -167,8 +167,8 @@ class ComicTableViewController: UIViewController, ViewModelDelegate, Statable {
 
 extension ComicTableViewController {
     
-    func reloadTable() async {
-        await MainActor.run {
+    func reloadTable() {
+        DispatchQueue.main.async {
             self.comicsViewModel.applySnapshot(animatingDifferences: true, dataSource: self.dataSource)
         }
     }

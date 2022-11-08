@@ -17,5 +17,5 @@ protocol JSONParsing {
 }
 
 protocol ViewModelDelegate: AnyObject {
-     func reloadTable() async
+     func reloadTable()
 }

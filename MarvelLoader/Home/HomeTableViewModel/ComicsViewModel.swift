@@ -73,9 +73,9 @@ class ComicsViewModel {
                 switch result {
                 case .success(let result):
                     self.comicbooks = result.data?.comicbooks
-                    Task{
-                        await self.delegate?.reloadTable()
-                    }
+                   
+                    self.delegate?.reloadTable()
+                    
                     self.state = .populated
                     
                 case .failure(let error):
